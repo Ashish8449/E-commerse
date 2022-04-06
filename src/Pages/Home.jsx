@@ -23,9 +23,9 @@ export default function Home() {
     setLoader(true);
     setTimeout(() => {
       setLoader(false);
-      console.log("time");
     }, 1000);
   }, []);
+
   return (
     <>
       {loader && (

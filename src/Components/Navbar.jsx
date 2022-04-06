@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { Link, Navigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
@@ -113,10 +113,12 @@ const Button = styled.button`
     opacity: 0.8;
   }
 `;
+
 export default function Navbar() {
+  // const isLogIng=0;
   const isLogIng = useSelector((state) => state.local.isLogIng);
+
   const currentUser = useSelector((state) => state.local.currentUser);
-  const [logOut, setLogOut] = useState(false);
 
   const dispatch = useDispatch();
 
@@ -127,11 +129,11 @@ export default function Navbar() {
     currentUser >= 0 ? state.local.data[currentUser].cartItems : []
   );
 
+
   return (
     <>
-    {logOut && <Navigate to="/login"/>}
       <Nav>
-        <img src="images/logoimg.webp" alt="" />
+        <img src="/images/logoimg.webp" alt="" />
         <NavitemsBox>
           <li>
             <Link to="/">home</Link>
@@ -158,13 +160,13 @@ export default function Navbar() {
             </li>
           )}
 
-          {isLogIng && (
+          { (
             <li>
               <i className="fa fa-heart-o" aria-hidden="true"></i>
               {fav.length > 0 && <span>{fav.length}</span>}
             </li>
           )}
-          {isLogIng && (
+          {(
             <li>
               <i className="fa fa-shopping-bag" aria-hidden="true"></i>
               {cartItems.length > 0 && <span>{cartItems.length}</span>}
@@ -176,7 +178,7 @@ export default function Navbar() {
               <Button
                 onClick={() => {
                   dispatch(localStorageActions.logOutHandler());
-                  setLogOut(true);
+                 
                 }}
               >
                 Log Out

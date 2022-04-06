@@ -44,34 +44,34 @@ export default homeItemsList;
 export const FilterData = [
   {
     heading: "Price ",
-    types: ["Under $25", "$25 to $50", "$50 to $100", "$100 to $200"],
+    types: ["Under ₹25", "₹25 to ₹50", "₹50 to ₹100", "₹100 to ₹200"],
   },
-  {
-    heading: "Interest",
-    types: ["Animals & Nature", "Anime & Manga", "Fashion", "Music"],
-  },
-  {
-    heading: "Interest",
-    types: ["Animals & Nature", "Anime & Manga", "Fashion", "Music"],
-  },
-  {
-    heading: "Interest",
-    types: ["Animals & Nature", "Anime & Manga", "Fashion", "Music"],
-  },
-  {
-    heading: "Price ",
-    types: ["Under $25", "$25 to $50", "$50 to $100", "$100 to $200"],
-  },
-  {
-    heading: "Interest",
-    types: ["Animals & Nature", "Anime & Manga", "Fashion", "Music"],
-  },
-  {
-    heading: "Interest",
-    types: ["Animals & Nature", "Anime & Manga", "Fashion", "Music"],
-  },
-  {
-    heading: "Interest",
-    types: ["Animals & Nature", "Anime & Manga", "Fashion", "Music"],
-  },
+  // {
+  //   heading: "Interest",
+  //   types: ["Animals & Nature", "Anime & Manga", "Fashion", "Music"],
+  // },
+  // {
+  //   heading: "Interest",
+  //   types: ["Animals & Nature", "Anime & Manga", "Fashion", "Music"],
+  // },
+  // {
+  //   heading: "Interest",
+  //   types: ["Animals & Nature", "Anime & Manga", "Fashion", "Music"],
+  // },
+  // {
+  //   heading: "Price ",
+  //   types: ["Under ₹25", "₹25 to ₹50", "₹50 to ₹100", "₹100 to ₹200"],
+  // },
+  // {
+  //   heading: "Interest",
+  //   types: ["Animals & Nature", "Anime & Manga", "Fashion", "Music"],
+  // },
+  // {
+  //   heading: "Interest",
+  //   types: ["Animals & Nature", "Anime & Manga", "Fashion", "Music"],
+  // },
+  // {
+  //   heading: "Interest",
+  //   types: ["Animals & Nature", "Anime & Manga", "Fashion", "Music"],
+  // },
 ];

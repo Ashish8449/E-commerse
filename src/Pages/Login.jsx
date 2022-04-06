@@ -28,6 +28,8 @@ export default function Login() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const localData = useSelector((state) => state);
+
   const isLogIng = useSelector((state) => state.local.isLogIng);
   const [loader, setLoader] = useState(true);
   useEffect(() => {
@@ -49,11 +51,21 @@ export default function Login() {
   };
   const SignInHandler = (e) => {
     e.preventDefault();
+
+    dispatch(
+      localStorageActions.signIn({
+        email,
+        password,
+      })
+    );
   };
   const submitSignUpHandler = (e) => {
     e.preventDefault();
-    console.log("first");
-    if (!name || !email || !password) return;
+
+    if (!name || !email || !password) {
+      alert("fill the form correctly");
+      return;
+    }
     dispatch(
       localStorageActions.signUpUser({
         id: -1,
@@ -66,17 +78,18 @@ export default function Login() {
         cartItems: [],
       })
     );
+    dispatch(localStorageActions.setInitalState(localData.local));
   };
 
   return (
     <>
+      {isLogIng && <Navigate to="/" />}
       {loader && (
         <Loader>
           <img src="/images/Spinner-0.8s-223px.gif" alt="" />
         </Loader>
       )}
       <LoginBox>
-        {isLogIng && <Navigate to="/" />}
         <div class="container" id="container">
           <div class="form-container sign-up-container">
             <form action="#" onSubmit={submitSignUpHandler}>
