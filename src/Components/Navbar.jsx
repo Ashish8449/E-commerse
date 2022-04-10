@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
-
+import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
 const Nav = styled.div`
   background-attachment: fixed;
   width: 100%;
@@ -18,8 +19,8 @@ const Nav = styled.div`
     margin-left: 20px;
   }
   @media (max-width: 800px) {
- align-items:center;
- padding: 0px;
+    align-items: center;
+    padding: 0px;
   }
 `;
 const NavitemsBox = styled.ul`
@@ -35,6 +36,10 @@ const NavitemsBox = styled.ul`
     text-transform: uppercase;
     transition: ease-in-out 0.5s;
     border-radius: 4px;
+  }
+  a {
+    font-size: 20px;
+    color: black;
   }
   li:hover {
     border-bottom: 4px solid #ff2020;
@@ -94,16 +99,24 @@ const Hamburger = styled.div`
   }
 `;
 export default function Navbar() {
+  const fav = useSelector((state) => state.ui.favItems);
+  const cartItems = useSelector((state) => state.ui.cartItems);
   return (
     <Nav>
       <img src="images/logoimg.webp" alt="" />
       <NavitemsBox>
-        <li>home</li>
-        <li>MEN’S</li>
-        <li>WOMEN’S</li>
-        <li>WOMEN’S</li>
-        <li>WOMEN’S</li>
-        <li>home</li>
+        <li>
+          <Link to="/">home</Link>
+        </li>
+        <li>
+          <Link to="/shop">MEN’S</Link>
+        </li>
+        <li>
+          <Link to="/shop">Baby's Fashion</Link>
+        </li>
+        <li>
+          <Link to="/shop">WOMEN’S</Link>
+        </li>
       </NavitemsBox>
       <LoginBox>
         {/* <Search>
@@ -114,15 +127,15 @@ export default function Navbar() {
 
         <li>
           <i className="fa fa-heart-o" aria-hidden="true"></i>
-          <span>2</span>
+          {fav.length > 0 && <span>{fav.length}</span>}
         </li>
         <li>
           <i className="fa fa-shopping-bag" aria-hidden="true"></i>
-          <span>2</span>
+          {cartItems.length>0 && <span>{cartItems.length}</span>}
         </li>
       </LoginBox>
       <Hamburger>
-        <i class="bi bi-list"></i>
+        <i className="bi bi-list"></i>
       </Hamburger>
     </Nav>
   );

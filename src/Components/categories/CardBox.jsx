@@ -1,4 +1,5 @@
-import React from "react";
+import { Axios } from "axios";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import Card from "./Card";
 
@@ -15,7 +16,9 @@ const Box = styled.div`
   }
 `;
 
+
 export default function CardBox() {
+
   return (
     <Box>
       <Card img="https://preview.colorlib.com/theme/capitalshop/assets/img/gallery/xitems1.jpg.pagespeed.ic.oEs2Is3V_r.webp" text="Men's Fashion" />
