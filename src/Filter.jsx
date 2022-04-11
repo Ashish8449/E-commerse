@@ -27,10 +27,10 @@ const Box = styled.div`
 `;
 export default function Filter(props) {
   const { heading, data } = props;
-  console.log(data);
+
   const items = data.map((item, key) => (
     <li key={key}>
-      <label for={item}>
+      <label htmlFor={item}>
         {" "}
         <input
           type="checkbox"

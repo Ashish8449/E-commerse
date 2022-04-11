@@ -32,23 +32,23 @@ export default function CardBox() {
       const res = await fetch(`https://backendapi.turing.com/products`);
       const data = await res.json();
 
-      console.log(data);
+ 
       setLoader(false);
       setCards(data.rows);
-      console.log("done");
+ 
     };
     getData();
   }, []);
-  console.log(cards, "cardbox");
+
   return (
     <Box>
       {loader && <Loader>
         <img src="/images/Spinner-0.8s-223px.gif" alt="" />
         </Loader>}
-      {cards.length>0 && cards.map((item) => {
-        console.log(item);
+      {cards.length>0 && cards.map((item ,indx) => {
+  
         return (
-          <Card img={item.thumbnail} name={item.name} price={item.price} />
+          <Card key={indx} img={item.thumbnail} name={item.name} price={item.price} />
         );
       })}
       {/* <Card />

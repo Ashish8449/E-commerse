@@ -1,7 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
-import { Link } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { Link, Navigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { localStorageActions } from "../Reducers/localStorage";
+
 const Nav = styled.div`
   background-attachment: fixed;
   width: 100%;
@@ -53,6 +55,7 @@ const LoginBox = styled.ul`
   list-style: none;
   display: flex;
   justify-content: space-evenly;
+  align-items: center;
   li {
     margin: 0 15px;
     position: relative;
@@ -98,45 +101,93 @@ const Hamburger = styled.div`
     display: block;
   }
 `;
+const Button = styled.button`
+  padding: 8px;
+  border-radius: 4px;
+  border: none;
+  background: #ff2020;
+  color: white;
+  font-weight: 600;
+  transition: ease-in 0.1s;
+  &:hover {
+    opacity: 0.8;
+  }
+`;
 export default function Navbar() {
-  const fav = useSelector((state) => state.ui.favItems);
-  const cartItems = useSelector((state) => state.ui.cartItems);
+  const isLogIng = useSelector((state) => state.local.isLogIng);
+  const currentUser = useSelector((state) => state.local.currentUser);
+  const [logOut, setLogOut] = useState(false);
+
+  const dispatch = useDispatch();
+
+  const fav = useSelector((state) =>
+    currentUser >= 0 ? state.local.data[currentUser].wishList : []
+  );
+  const cartItems = useSelector((state) =>
+    currentUser >= 0 ? state.local.data[currentUser].cartItems : []
+  );
+
   return (
-    <Nav>
-      <img src="images/logoimg.webp" alt="" />
-      <NavitemsBox>
-        <li>
-          <Link to="/">home</Link>
-        </li>
-        <li>
-          <Link to="/shop">MEN’S</Link>
-        </li>
-        <li>
-          <Link to="/shop">Baby's Fashion</Link>
-        </li>
-        <li>
-          <Link to="/shop">WOMEN’S</Link>
-        </li>
-      </NavitemsBox>
-      <LoginBox>
-        {/* <Search>
+    <>
+    {logOut && <Navigate to="/login"/>}
+      <Nav>
+        <img src="images/logoimg.webp" alt="" />
+        <NavitemsBox>
+          <li>
+            <Link to="/">home</Link>
+          </li>
+          <li>
+            <Link to="/shop">MEN’S</Link>
+          </li>
+          <li>
+            <Link to="/shop">Baby's Fashion</Link>
+          </li>
+          <li>
+            <Link to="/shop">WOMEN’S</Link>
+          </li>
+        </NavitemsBox>
+        <LoginBox>
+          {/* <Search>
           <input type="text" />
           <i className="fa fa-search" aria-hidden="true"></i>
         </Search> */}
-        <li>Login / Register</li>
+          {!isLogIng && (
+            <li>
+              {" "}
+              <Link to="/login">Login / Register </Link>{" "}
+            </li>
+          )}
 
-        <li>
-          <i className="fa fa-heart-o" aria-hidden="true"></i>
-          {fav.length > 0 && <span>{fav.length}</span>}
-        </li>
-        <li>
-          <i className="fa fa-shopping-bag" aria-hidden="true"></i>
-          {cartItems.length>0 && <span>{cartItems.length}</span>}
-        </li>
-      </LoginBox>
-      <Hamburger>
-        <i className="bi bi-list"></i>
-      </Hamburger>
-    </Nav>
+          {isLogIng && (
+            <li>
+              <i className="fa fa-heart-o" aria-hidden="true"></i>
+              {fav.length > 0 && <span>{fav.length}</span>}
+            </li>
+          )}
+          {isLogIng && (
+            <li>
+              <i className="fa fa-shopping-bag" aria-hidden="true"></i>
+              {cartItems.length > 0 && <span>{cartItems.length}</span>}
+            </li>
+          )}
+          {isLogIng && (
+            <li>
+              {" "}
+              <Button
+                onClick={() => {
+                  dispatch(localStorageActions.logOutHandler());
+                  setLogOut(true);
+                }}
+              >
+                Log Out
+              </Button>
+            </li>
+          )}
+        </LoginBox>
+        <Hamburger>
+          <i className="bi bi-list"></i>
+        </Hamburger>
+      </Nav>
+    </>
   );
 }

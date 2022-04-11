@@ -1,10 +1,10 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { Navigate } from "react-router-dom";
 import styled from "styled-components";
+import { localStorageActions } from "../Reducers/localStorage";
+import { Loader } from "./Home";
 import "./Login.css";
-const signUpButton = document.getElementById("signUp");
-const signInButton = document.getElementById("signIn");
-const container = document.getElementById("container");
-
 
 const LoginBox = styled.div`
   min-height: 100vh;
@@ -22,27 +22,64 @@ const LoginBox = styled.div`
   height: 100vh;
   margin: 30px 0;
 `;
-const SignInClickHandler = (e) => {
-  e.preventDefault();
-  container.classList.toggle("right-panel-active"); 
-};
 
-const SignUPClickHandler = (e) => {
-  e.preventDefault();
-  console.log("clic");
-  container.classList.toggle("right-panel-active");
-};
-const SignInHandler = (e) => {
-  e.preventDefault();
-  console.log("login info");
-};
 export default function Login() {
+  const dispatch = useDispatch();
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const isLogIng = useSelector((state) => state.local.isLogIng);
+  const [loader, setLoader] = useState(true);
+  useEffect(() => {
+    setTimeout(() => {
+      setLoader(false);
+    }, 300);
+  });
+
+  const SignInClickHandler = (e) => {
+    e.preventDefault();
+    const container = document.getElementById("container");
+    container.classList.toggle("right-panel-active");
+  };
+
+  const SignUPClickHandler = (e) => {
+    e.preventDefault();
+    const container = document.getElementById("container");
+    container.classList.toggle("right-panel-active");
+  };
+  const SignInHandler = (e) => {
+    e.preventDefault();
+  };
+  const submitSignUpHandler = (e) => {
+    e.preventDefault();
+    console.log("first");
+    if (!name || !email || !password) return;
+    dispatch(
+      localStorageActions.signUpUser({
+        id: -1,
+        userCredentials: {
+          userName: name,
+          password,
+          email,
+        },
+        wishList: [],
+        cartItems: [],
+      })
+    );
+  };
+
   return (
     <>
+      {loader && (
+        <Loader>
+          <img src="/images/Spinner-0.8s-223px.gif" alt="" />
+        </Loader>
+      )}
       <LoginBox>
+        {isLogIng && <Navigate to="/" />}
         <div class="container" id="container">
           <div class="form-container sign-up-container">
-            <form action="#">
+            <form action="#" onSubmit={submitSignUpHandler}>
               <h1>Create Account</h1>
               <div class="social-container">
                 <a href="#" class="social">
@@ -56,9 +93,25 @@ export default function Login() {
                 </a>
               </div>
               <span>or use your email for registration</span>
-              <input type="text" placeholder="Name" />
-              <input type="email" placeholder="Email" />
-              <input type="password" placeholder="Password" />
+
+              <input
+                type="text"
+                placeholder="Name"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+              />
+              <input
+                type="email"
+                placeholder="Email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+              />
+              <input
+                type="password"
+                placeholder="Password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+              />
               <button>Sign Up</button>
             </form>
           </div>
@@ -77,8 +130,18 @@ export default function Login() {
                 </a>
               </div>
               <span>or use your account</span>
-              <input type="email" placeholder="Email" />
-              <input type="password" placeholder="Password" />
+              <input
+                type="email"
+                placeholder="Email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+              />
+              <input
+                type="password"
+                placeholder="Password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+              />
               <a href="#">Forgot your password?</a>
               <button onClick={SignInHandler}>Sign In</button>
             </form>

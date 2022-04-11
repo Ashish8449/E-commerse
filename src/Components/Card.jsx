@@ -1,6 +1,7 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
+import { localStorageActions } from "../Reducers/localStorage";
 import { uiActions } from "../Reducers/uiSlice";
 const CardEle = styled.div`
   /* max-height: 350px;
@@ -86,34 +87,41 @@ const Box = styled.div`
 
 export default function Card(props) {
   const { img, price, name } = props;
-  // console.log(price);
+  const currentUser = useSelector((state) => state.local.currentUser);
+
 
   const dispatch = useDispatch();
   return (
     <CardEle>
       <ImgBox>
-        <img src="/images/gulmohar_jaipur_teal_floral_print_flared_kurta_set.webp" alt="" />
+        <img
+          src="/images/gulmohar_jaipur_teal_floral_print_flared_kurta_set.webp"
+          alt=""
+        />
 
         <Box>
           <i className="bi bi-arrows-angle-expand"></i>
           <i
-            onClick={() =>
-              dispatch(
-                uiActions.addItemToFav({
+            onClick={() => {
+           
+              return dispatch(
+                localStorageActions.addItemToFav({
                   id: 1,
                 })
-              )
-            }
+              );
+            }}
             className="bi bi-heart"
           ></i>
           <i
-            onClick={() =>
-              dispatch(
-                uiActions.addItemToCart({
-                  id: 1,
-                })
-              )
-            }
+            onClick={() => {
+         
+                dispatch(
+                    localStorageActions.addItemToCart({
+                      id: 1,
+                    })
+                  )
+               
+            }}
             className="bi bi-cart-plus"
           ></i>
         </Box>

@@ -9,13 +9,7 @@ export const counterSlice = createSlice({
   name: "counter",
   initialState,
   reducers: {
-    addItemToFav: (state, action) => {
-        state.favItems.push(action.payload);
-    },
-    addItemToCart: (state, action) => {
-       
-       state.cartItems.push(action.payload);
-    },
+   
   },
 });
 

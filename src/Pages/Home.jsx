@@ -5,7 +5,7 @@ import CardBox from "../Components/categories/CardBox";
 import HomeItems from "../Components/Items/HomeItems";
 import styled from "styled-components";
 import homeItemsList from "../data";
-const Loader = styled.div`
+export const Loader = styled.div`
   min-width: calc(100vw - 30vw);
   height: 100vh;
   display: flex;
@@ -18,12 +18,14 @@ const Loader = styled.div`
   }
 `;
 export default function Home() {
-  const [loader, setLoader] = useState(true);
+  const [loader, setLoader] = useState(false);
   useEffect(() => {
+    setLoader(true);
     setTimeout(() => {
       setLoader(false);
+      console.log("time");
     }, 1000);
-  });
+  }, []);
   return (
     <>
       {loader && (
@@ -31,14 +33,17 @@ export default function Home() {
           <img src="/images/Spinner-0.8s-223px.gif" alt="" />
         </Loader>
       )}
+      {!loader && (
+        <>
+          <CarouselComponet />
+          <CardBox />
+          {homeItemsList.map((item, key) => (
+            <HomeItems key={key} title={item.title} imgs={item.imgs} />
+          ))}
 
-      <CarouselComponet />
-      <CardBox />
-      {homeItemsList.map((item, key) => (
-        <HomeItems key={key} title={item.title} imgs={item.imgs} />
-      ))}
-
-      <About />
+          <About />
+        </>
+      )}
     </>
   );
 }
