@@ -3,6 +3,8 @@ import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 import { uiActions } from "../Reducers/uiSlice";
 const CardEle = styled.div`
+  /* max-height: 350px;
+background-color: blue; */
   width: calc(25% - 30px);
   /* margin: 10px; */
   margin-bottom: 30px;
@@ -27,6 +29,11 @@ const Content = styled.div`
 `;
 const ImgBox = styled.div`
   position: relative;
+  /* height: 400px; */
+  img {
+    /* width: 100%;
+    height: 400px; */
+  }
 `;
 const Box = styled.div`
   display: flex;
@@ -37,7 +44,7 @@ const Box = styled.div`
   /* left: 30%; */
   width: calc(100% - 20px);
   /* background-color: white; */
- 
+
   i {
     font-size: 20px;
     margin: 0 10px;
@@ -69,24 +76,23 @@ const Box = styled.div`
     background-color: #ff2020;
     color: white;
   }
-  & .bi-arrows-angle-expand{
-  transform: rotate(45deg);
-}
-& .bi-arrows-angle-expand :hover {
-  transform: rotate(400deg);
-}
+  & .bi-arrows-angle-expand {
+    transform: rotate(45deg);
+  }
+  & .bi-arrows-angle-expand :hover {
+    transform: rotate(400deg);
+  }
 `;
 
 export default function Card(props) {
-  const { img }= props;
+  const { img, price, name } = props;
+  // console.log(price);
+
   const dispatch = useDispatch();
   return (
     <CardEle>
       <ImgBox>
-        <img
-          src="/images/gulmohar_jaipur_teal_floral_print_flared_kurta_set.webp"
-          alt=""
-        />
+        <img src="/images/gulmohar_jaipur_teal_floral_print_flared_kurta_set.webp" alt="" />
 
         <Box>
           <i className="bi bi-arrows-angle-expand"></i>
@@ -113,9 +119,9 @@ export default function Card(props) {
         </Box>
       </ImgBox>
       <Content>
-        <h6>GULMOHAR JAIPUR</h6>
-        <p>Floral Print Flared Kurta Set</p>
-        <h6>$12342</h6>
+        <h6>{name}</h6>
+        {/* <p>Floral Print Flared Kurta Set</p> */}
+        <h6>$ {price}</h6>
       </Content>
     </CardEle>
   );

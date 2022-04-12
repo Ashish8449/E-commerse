@@ -10,6 +10,7 @@ import { Routes, Route } from "react-router-dom";
 
 import Home from "./Pages/Home";
 import ShopingPage from "./Pages/ShopingPage";
+import Login from "./Pages/Login";
 function App() {
   return (
     <>
@@ -18,6 +19,7 @@ function App() {
         <Routes>
           <Route excat  path="/" element={<Home />} />
           <Route excat path="/shop" element={<ShopingPage/>} />
+          <Route excat path="/login" element={<Login/>} />
         </Routes>
 
         <Footer />
