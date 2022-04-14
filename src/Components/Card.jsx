@@ -1,12 +1,13 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link ,useNavigate } from "react-router-dom";
+
 import styled from "styled-components";
 import { localStorageActions } from "../Reducers/localStorage";
 import { uiActions } from "../Reducers/uiSlice";
 const CardEle = styled.div`
   width: calc(25% - 30px);
-   min-width: 250px;
+  min-width: 250px;
   margin-bottom: 30px;
   margin: 10px;
   position: relative;
@@ -26,8 +27,8 @@ const CardEle = styled.div`
   &:hover img {
     transform: scale(1.1);
   }
-  &:hover a{
-    color:#ff4b2b;
+  &:hover a {
+    color: #ff4b2b;
   }
 `;
 const Content = styled.div`
@@ -49,7 +50,10 @@ const Box = styled.div`
   justify-content: center;
   align-items: center;
   position: absolute;
-  bottom: 20px;
+  bottom: 0px;
+  left: 10px;
+  /* background: red; */
+  padding: 10px 0px;
   /* left: 30%; */
   width: calc(100% - 20px);
   /* background-color: white; */
@@ -96,45 +100,43 @@ const Box = styled.div`
 export default function Card(props) {
   const { img, price, name, item } = props;
   const currentUser = useSelector((state) => state.local.currentUser);
-
+const navigate = useNavigate();
+  console.log(img);
   const dispatch = useDispatch();
   return (
     <CardEle>
-      <Link to={`/shop/₹{item.product_id}`}>
-        <ImgBox>
+      <ImgBox>
+        <Link to={`/shop/${item.product_id}`}>
           <img
-            src={`https://backendapi.turing.com/images/products/₹{img}`}
+            src={`https://backendapi.turing.com/images/products/${img}`}
             alt=""
           />
+        </Link>
+        <Box>
+          <i className="bi bi-arrows-angle-expand" onClick={() => {
+            navigate(`/shop/${item.product_id}`)
+          }}></i>
 
-          <Box>
-            <i className="bi bi-arrows-angle-expand"></i>
-            <i
-              onClick={() => {
-                return dispatch(
-                  localStorageActions.addItemToFav({
-                    id: 1,
-                  })
-                );
-              }}
-              className="bi bi-heart"
-            ></i>
-            <i
-              onClick={() => {
-                dispatch(
-                  localStorageActions.addItemToCart(item)
-                );
-              }}
-              className="bi bi-cart-plus"
-            ></i>
-          </Box>
-        </ImgBox>
-        <Content>
-          <h6>{name}</h6>
-          {/* <p>Floral Print Flared Kurta Set</p> */}
-          <h6>₹ {(price * 80).toFixed(0)}</h6>
-        </Content>
-      </Link>
+          <i
+            onClick={() => {
+        
+              return dispatch(localStorageActions.addItemToFav(item));
+            }}
+            className="bi bi-heart"
+          ></i>
+          <i
+            onClick={() => {
+              dispatch(localStorageActions.addItemToCart(item));
+            }}
+            className="bi bi-cart-plus"
+          ></i>
+        </Box>
+      </ImgBox>
+      <Content>
+        <h6>{name}</h6>
+        {/* <p>Floral Print Flared Kurta Set</p> */}
+        <h6>₹ {(price * 80).toFixed(0)}</h6>
+      </Content>
     </CardEle>
   );
 }

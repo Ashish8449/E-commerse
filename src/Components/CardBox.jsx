@@ -10,6 +10,7 @@ const Box = styled.div`
   justify-content: space-evenly;
   /* align-items:; */
   padding: 40px 0;
+  transition: 0.7s;
 `;
 const Loader = styled.div`
   min-width: calc(100vw - 30vw);
@@ -31,7 +32,6 @@ export default function CardBox() {
     setLoader(true);
     dispatch(getProducts(setLoader));
   }, []);
-  console.log(products);
 
   return (
     <Box>

@@ -36,7 +36,7 @@ export const getProducts = (setLoader) => {
         `https://backendapi.turing.com/products?page=1&limit=100&description_length=1500" -H "accept: application/json`
       );
       const data = await res.json();
-      console.log("uiSlice0", data);
+   
       dispatch(uiActions.replaceProducts(data));
     } catch {
       setLoader(false);
@@ -46,8 +46,24 @@ export const getProducts = (setLoader) => {
     }
   };
 };
-export const getProductsDetials = () => {
-  return async (dispatch) => {};
+export const getProductsDetials = (setLoader ,productId , setItem) => {
+  return async (dispatch) => {
+    setLoader(true);
+ 
+    try {
+      const res = await fetch(
+        `https://backendapi.turing.com/products/${productId}`
+      );
+      const data = await res.json();
+     
+      setItem(data);
+    } catch {
+      setLoader(false);
+      alert("You got some error");
+    } finally {
+      setLoader(false);
+    }
+  };
 };
 // Action creators are generated for each case reducer function
 export const uiActions = counterSlice.actions;

@@ -118,7 +118,7 @@ export default function Navbar() {
   // const isLogIng=0;
   const isLogIng = useSelector((state) => state.local.isLogIng);
 
-  const currentUser = useSelector((state) => state.local.currentUser);
+  const currentUser = 0;
 
   const dispatch = useDispatch();
 
@@ -141,9 +141,7 @@ export default function Navbar() {
           <li>
             <Link to="/shop">MEN’S</Link>
           </li>
-          <li>
-            <Link to="/shop">Baby's Fashion</Link>
-          </li>
+      
           <li>
             <Link to="/shop">WOMEN’S</Link>
           </li>

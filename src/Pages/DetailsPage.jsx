@@ -1,7 +1,10 @@
 import React, { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
 import { Carousel } from "react-responsive-carousel";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
+import { getProductsDetials } from "../Reducers/uiSlice";
+
 const Wrapper = styled.div`
   padding: 60px 40px;
   display: flex;
@@ -81,96 +84,122 @@ const RateingText = styled.span`
 const DiscriptionText = styled.div`
   margin: 10px 0px;
 `;
+
+const Loader = styled.div`
+  min-width: calc(100vw - 30vw);
+  height: 80vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  img {
+    width: 100px;
+    height: 100px;
+    text-align: center;
+  }
+`;
+
+const Button = styled.button`
+  margin-right: 20px !important;
+  margin-top: 10px;
+  font-size: 14px !important;
+  padding: 10px 20px;
+  font-weight: 500;
+  letter-spacing: 1px;
+  word-spacing: 1px;
+  display: flex;
+  align-items: center;
+
+  i {
+    font-size: 16px;
+    margin-right: 10px;
+  }
+`;
+const Buttons = styled.div`
+  display: flex;
+  justify-content: flex-start;
+  margin: 20px 0px;
+`;
+
+let discount = Math.random() * 10 + 20;
+discount = discount.toFixed(0);
+
 export default function DetailsPage() {
+  const dispatch = useDispatch();
   const { productId } = useParams();
-  const [item, setItem] = useState({
-    product_id: 5,
-    name: "Marianne",
-    description:
-      'She symbolizes the "Triumph of the Republic" and has been depicted many different ways in the history of France, as you will see below!',
-    price: "15.95",
-    discounted_price: "14.95",
-    image: "marianne.gif",
-    image_2: "marianne-2.gif",
-    thumbnail: "marianne-thumbnail.gif",
-    display: 2,
-  });
-  const Button = styled.button`
-    margin-right: 20px !important;
-    margin-top: 10px;
-    font-size: 14px !important;
-    padding: 10px 20px;
-    font-weight: 500;
-    letter-spacing: 1px;
-    word-spacing: 1px;
-    display: flex;
-    align-items: center;
+  const [loader, setLoader] = useState(false);
+  const [item, setItem] = useState("");
+  useEffect(() => {
+    dispatch(getProductsDetials(setLoader, productId, setItem));
+  }, [productId]);
 
-    i {
-      font-size: 16px;
-      margin-right: 10px;
-    }
-  `;
-  const Buttons = styled.div`
-    display: flex;
-    justify-content: flex-start;
-    margin: 20px 0px ;
+  // price section
 
-  `;
+  let realPrice = (item.price * 80).toFixed(0);
+  let newPrice = realPrice - ((discount * realPrice) / 100).toFixed(0);
 
-  useEffect(() => {});
   return (
     <>
-      <Wrapper>
-        <Img>
-          <Carousel autoPlay={true} showThumbs={false} useKeyboardArrows={true}>
-            <img
-              src={`https://backendapi.turing.com/images/products/${item.image}`}
-              alt=""
-            />
-            <img
-              src={`https://backendapi.turing.com/images/products/${item.image_2}`}
-              alt=""
-            />
-            <img
-              src={`https://backendapi.turing.com/images/products/${item.thumbnail}`}
-              alt=""
-            />
-          </Carousel>
-          <h3>Chartres Cathedral</h3>
-        </Img>
-        <Discription>
-          <h3>Chartres Cathedral</h3>
-          <p>Special price</p>
-          <Price>
-            ₹ 10
-            <span>₹ 15</span>
-            <PercentOff>75 % Off</PercentOff>
-          </Price>
-          <Rating>
-            <span>{(Math.random().toFixed(2) * 2 + 3).toPrecision(2)}</span>
-            <img src="/images/star.svg" alt="" />
-          </Rating>
-          <RateingText>78,678 ratings and 9,515 reviews</RateingText>
+      {loader && (
+        <Loader>
+          <img src="/images/Spinner-0.8s-223px.gif" alt="" />
+        </Loader>
+      )}
+      {item !== "" && !loader && (
+        <Wrapper>
+          <Img>
+            <Carousel
+              autoPlay={true}
+              showThumbs={false}
+              useKeyboardArrows={true}
+            >
+              <img
+                src={`https://backendapi.turing.com/images/products/${item.image}`}
+                alt=""
+              />
+              <img
+                src={`https://backendapi.turing.com/images/products/${item.image_2}`}
+                alt=""
+              />
+              <img
+                src={`https://backendapi.turing.com/images/products/${item.thumbnail}`}
+                alt=""
+              />
+            </Carousel>
+            <h3>{item.name}</h3>
+          </Img>
+          <Discription>
+            <h3>{item.name}</h3>
+            <p>Special Price</p>
+            <Price>
+              ₹ {newPrice}
+              <span>₹ {realPrice}</span>
+              <PercentOff>{discount} % Off</PercentOff>
+            </Price>
+            <Rating>
+              <span>{(Math.random().toFixed(2) * 2 + 3).toPrecision(2)}</span>
+              <img src="/images/star.svg" alt="" />
+            </Rating>
+            <RateingText>78,678 ratings and 9,515 reviews</RateingText>
 
-          <Buttons>
-            <Button>
-              <i className="bi bi-cart-plus"></i>
-              Add to Cart
-            </Button>{" "}
-            <Button>
-              {" "}
-              <i className="bi bi-heart"></i> Add to Fav
-            </Button>
-          </Buttons>
-          <DiscriptionText>
-            {item.description}{" "}
-            {item.description.length < 300
-              ? "    Lorem ipsum, dolor sit amet consectetur adipisicing elit. Eaque debitis ullam voluptatum cumque pariatur corrupti saepe, incidunt modi, iste provident vero adipisci quibusdam, commodi in a est. Nesciunt, tempore illo.  Lorem ipsum dolor, sit amet consectetur adipisicing elit. Ratione reiciendis suscipit eveniet dignissimos saepe incidunt, a facilis ipsum veritatis nesciunt rerum cupiditate? Corporis veritatis sit autem rerum non perferendis pariatur?"
-              : " "}
-          </DiscriptionText>
-        </Discription>
-      </Wrapper>
+            <Buttons>
+              <Button>
+                <i className="bi bi-cart-plus"></i>
+                Add to Cart
+              </Button>{" "}
+              <Button>
+                {" "}
+                <i className="bi bi-heart"></i> Add to Fav
+              </Button>
+            </Buttons>
+            <DiscriptionText>
+              {item.description}{" "}
+              {item.description.length < 300
+                ? "    Lorem ipsum, dolor sit amet consectetur adipisicing elit. Eaque debitis ullam voluptatum cumque pariatur corrupti saepe, incidunt modi, iste provident vero adipisci quibusdam, commodi in a est. Nesciunt, tempore illo.  Lorem ipsum dolor, sit amet consectetur adipisicing elit. Ratione reiciendis suscipit eveniet dignissimos saepe incidunt, a facilis ipsum veritatis nesciunt rerum cupiditate? Corporis veritatis sit autem rerum non perferendis pariatur?"
+                : " "}
+            </DiscriptionText>
+          </Discription>
+        </Wrapper>
+      )}
     </>
   );
 }

@@ -2,7 +2,6 @@ import { createSlice } from "@reduxjs/toolkit";
 let initialState = {
   data: [
     {
-      id: -1,
       userCredentials: {
         userName: "",
         password: -1,
@@ -11,14 +10,10 @@ let initialState = {
       cartItems: [],
     },
   ],
-  currentUser: -1,
+
   isLogIng: false,
 };
-const getInitalState = JSON.parse(localStorage.getItem("initialState"));
-// console.log(get)
-if (getInitalState) {
-  initialState = getInitalState;
-}
+
 const localStorageSlice = createSlice({
   name: "local",
   initialState,
@@ -30,9 +25,7 @@ const localStorageSlice = createSlice({
     setInitalState: (state, action) => {
       localStorage.setItem("initalState", JSON.stringify(state));
     },
-    getInitalState: (state, action) => {
-      state = action.payload;
-    },
+
     signUpUser: (state, action) => {
       const { id, userName, password, email } = action.payload;
       action.payload.id = state.data.length;
@@ -76,24 +69,22 @@ const localStorageSlice = createSlice({
       state.currentUser = -1;
     },
     addItemToFav: (state, action) => {
-      const { currentUser } = state;
-      if (currentUser >= 0){
-        state.data[currentUser].wishList.push(action.payload);
-        console.log(state);
-    }
-      else {
-       
+      console.log(action.payload)
+      const check = state.data[0].wishList.filter(
+        (item) => item.product_id === action.payload.product_id
+      );
+    
+      if (check.length===0) state.data[0].wishList.push(action.payload);
 
-        // if user is log out then if you he want to add wishList 
-      }
     },
     addItemToCart: (state, action) => {
-      const { currentUser } = state;
-      if (currentUser >= 0)
-        state.data[currentUser].cartItems.push(action.payload);
-      else {
-       // if user is log out then if you he want to add to in his cart
-      }
+    
+      const check = state.data[0].cartItems.filter(
+        (item) => item.product_id === action.payload.product_id
+      );
+    
+      if (check.length===0)
+      state.data[0].cartItems.push(action.payload);
     },
   },
 });
