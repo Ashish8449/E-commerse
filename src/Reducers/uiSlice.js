@@ -4,6 +4,9 @@ const initialState = {
   products: {
     rows: [],
   },
+  copyProduct: {
+    rows: [],
+  },
 };
 
 export const counterSlice = createSlice({
@@ -12,15 +15,26 @@ export const counterSlice = createSlice({
   reducers: {
     replaceProducts: (state, action) => {
       state.products = action.payload;
+      state.copyProduct = action.payload;
+    },
+    filterProducts: (state, action) => {
+      const val = action.payload;
+
+      state.products.rows = state.copyProduct.rows.filter((item) => {
+        const price = (item.price * 80).toFixed(0);
+        return val * 500 <= price && val * 500 + 500 >= price;
+      });
     },
   },
 });
 
 export const getProducts = (setLoader) => {
-  setLoader(true)
+  setLoader(true);
   return async (dispatch) => {
     try {
-      const res = await fetch(`https://backendapi.turing.com/products?page=1&limit=100&description_length=1500" -H "accept: application/json`);
+      const res = await fetch(
+        `https://backendapi.turing.com/products?page=1&limit=100&description_length=1500" -H "accept: application/json`
+      );
       const data = await res.json();
       console.log("uiSlice0", data);
       dispatch(uiActions.replaceProducts(data));
@@ -32,12 +46,9 @@ export const getProducts = (setLoader) => {
     }
   };
 };
-export const getProductsDetials= ()=>{
-  return async (dispatch)=>{
-    
-  }
-
-}
+export const getProductsDetials = () => {
+  return async (dispatch) => {};
+};
 // Action creators are generated for each case reducer function
 export const uiActions = counterSlice.actions;
 

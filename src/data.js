@@ -44,7 +44,13 @@ export default homeItemsList;
 export const FilterData = [
   {
     heading: "Price ",
-    types: ["Under ₹25", "₹25 to ₹50", "₹50 to ₹100", "₹100 to ₹200"],
+    types: [
+      "Under ₹500",
+      "₹500 to ₹1000",
+      "₹1000 to ₹1500",
+      "₹1500 to ₹2000",
+      "₹2000 to ₹2500",
+    ],
   },
   // {
   //   heading: "Interest",

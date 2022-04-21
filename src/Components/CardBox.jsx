@@ -24,24 +24,24 @@ const Loader = styled.div`
   }
 `;
 export default function CardBox() {
-  const products = useSelector((state) => state.ui.products.rows);
+  const products = useSelector((state) => state.ui.products);
   const [loader, setLoader] = useState(false);
   const dispatch = useDispatch();
   useEffect(() => {
     setLoader(true);
     dispatch(getProducts(setLoader));
-  
   }, []);
+  console.log(products);
 
   return (
     <Box>
-      {(loader ) && (
+      {loader && (
         <Loader>
           <img src="/images/Spinner-0.8s-223px.gif" alt="" />
         </Loader>
       )}
-      {products.length > 0 &&
-        products.map((item, indx) => {
+      {products.rows.length > 0 &&
+        products.rows.map((item, indx) => {
           return (
             <Card
               key={indx}

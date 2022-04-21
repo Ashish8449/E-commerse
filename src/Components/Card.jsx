@@ -132,7 +132,7 @@ export default function Card(props) {
         <Content>
           <h6>{name}</h6>
           {/* <p>Floral Print Flared Kurta Set</p> */}
-          <h6>₹ {(price * 80).toPrecision()}</h6>
+          <h6>₹ {(price * 80).toFixed(0)}</h6>
         </Content>
       </Link>
     </CardEle>
