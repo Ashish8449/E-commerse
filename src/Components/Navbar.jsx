@@ -115,8 +115,8 @@ const Button = styled.button`
 `;
 
 export default function Navbar() {
-  // const isLogIng=0;
-  const isLogIng = useSelector((state) => state.local.isLogIng);
+  // const  idToken=0;
+  const  idToken = useSelector((state) => state.local.idToken);
 
   const currentUser = 0;
 
@@ -151,7 +151,7 @@ export default function Navbar() {
           <input type="text" />
           <i className="fa fa-search" aria-hidden="true"></i>
         </Search> */}
-          {!isLogIng && (
+          {! idToken && (
             <li>
               {" "}
               <Link to="/login">Login / Register </Link>{" "}
@@ -170,7 +170,7 @@ export default function Navbar() {
               {cartItems.length > 0 && <span>{cartItems.length}</span>}
             </li>
           )}
-          {isLogIng && (
+          { idToken && (
             <li>
               {" "}
               <Button

@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Navigate } from "react-router-dom";
+import { getDatabase, ref, set } from "firebase/database";
 import styled from "styled-components";
-import { localStorageActions } from "../Reducers/localStorage";
+import { localStorageActions, signInFirebase } from "../Reducers/localStorage";
 import { Loader } from "./Home";
 import "./Login.css";
 
@@ -30,14 +31,25 @@ export default function Login() {
   const [password, setPassword] = useState("");
   const localData = useSelector((state) => state);
 
-  const isLogIng = useSelector((state) => state.local.isLogIng);
+  const idToken = useSelector((state) => state.local.idToken);
   const [loader, setLoader] = useState(true);
   useEffect(() => {
     setTimeout(() => {
       setLoader(false);
     }, 300);
   });
-
+  if (idToken) {
+    function writeUserData(userId, name, email, imageUrl) {
+      console.log("run");
+      const db = getDatabase();
+      set(ref(db, "users/" + userId), {
+        username: name,
+        email: email,
+        profile_picture: imageUrl,
+      });
+    }
+    writeUserData(2, name, email, password);
+  }
   const SignInClickHandler = (e) => {
     e.preventDefault();
     const container = document.getElementById("container");
@@ -49,13 +61,14 @@ export default function Login() {
     const container = document.getElementById("container");
     container.classList.toggle("right-panel-active");
   };
+
   const SignInHandler = (e) => {
     e.preventDefault();
 
     dispatch(
-      localStorageActions.signIn({
-        email,
+      signInFirebase({
         password,
+        email,
       })
     );
   };
@@ -66,6 +79,7 @@ export default function Login() {
       alert("fill the form correctly");
       return;
     }
+    console.log("signUP");
     dispatch(
       localStorageActions.signUpUser({
         id: -1,
@@ -83,7 +97,7 @@ export default function Login() {
 
   return (
     <>
-      {isLogIng && <Navigate to="/" />}
+      {idToken && <Navigate to="/" />}
       {loader && (
         <Loader>
           <img src="/images/Spinner-0.8s-223px.gif" alt="" />

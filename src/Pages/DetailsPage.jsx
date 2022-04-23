@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Carousel } from "react-responsive-carousel";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
+import { localStorageActions } from "../Reducers/localStorage";
 import { getProductsDetials } from "../Reducers/uiSlice";
 
 const Wrapper = styled.div`
@@ -113,6 +114,9 @@ const Button = styled.button`
     font-size: 16px;
     margin-right: 10px;
   }
+  i.bi-heart-fill {
+    color: ${(prop) => (prop.white ? "white !important" : "#ff4b2b")};
+  }
 `;
 const Buttons = styled.div`
   display: flex;
@@ -123,15 +127,26 @@ const Buttons = styled.div`
 let discount = Math.random() * 10 + 20;
 discount = discount.toFixed(0);
 
+const RatingRate = (Math.random().toFixed(2) * 2 + 3).toPrecision(2);
+const Rateby= (Math.random()* 500000).toFixed(0);
 export default function DetailsPage() {
   const dispatch = useDispatch();
   const { productId } = useParams();
+  const products = useSelector((state) => state.ui.products);
+  const wishList = useSelector((state) => state.local.data[0].wishList);
+  const cartItems = useSelector((state) => state.local.data[0].cartItems);
+  const currentItem = products.rows[productId - 1];
+
   const [loader, setLoader] = useState(false);
   const [item, setItem] = useState("");
   useEffect(() => {
     dispatch(getProductsDetials(setLoader, productId, setItem));
   }, [productId]);
 
+  const fillHeart =
+    wishList.filter((ele) => item.product_id === ele.product_id).length === 1;
+  const isInCart =
+    cartItems.filter((ele) => item.product_id === ele.product_id).length === 1;
   // price section
 
   let realPrice = (item.price * 80).toFixed(0);
@@ -176,19 +191,31 @@ export default function DetailsPage() {
               <PercentOff>{discount} % Off</PercentOff>
             </Price>
             <Rating>
-              <span>{(Math.random().toFixed(2) * 2 + 3).toPrecision(2)}</span>
+              <span>{RatingRate}</span>
               <img src="/images/star.svg" alt="" />
             </Rating>
-            <RateingText>78,678 ratings and 9,515 reviews</RateingText>
+            <RateingText>
+              {Rateby} ratings and 9,515
+              reviews
+            </RateingText>
 
             <Buttons>
-              <Button>
+              <Button
+                onClick={() =>
+                  dispatch(localStorageActions.addItemToCart(currentItem))
+                }
+              >
                 <i className="bi bi-cart-plus"></i>
-                Add to Cart
+             {isInCart ? "Remove  ": "Add "}   
               </Button>{" "}
-              <Button>
+              <Button
+                onClick={() =>
+                  dispatch(localStorageActions.addItemToFav(currentItem))
+                }
+              >
                 {" "}
-                <i className="bi bi-heart"></i> Add to Fav
+                <i className="bi bi-heart"></i>
+                {fillHeart ? "Remove " : "Add  "}
               </Button>
             </Buttons>
             <DiscriptionText>

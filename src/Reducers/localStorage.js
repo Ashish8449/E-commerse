@@ -1,4 +1,10 @@
 import { createSlice } from "@reduxjs/toolkit";
+import {
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+} from "firebase/auth";
+import { auth } from "../Firebase/firebase";
+
 let initialState = {
   data: [
     {
@@ -10,8 +16,9 @@ let initialState = {
       cartItems: [],
     },
   ],
+  user: "",
 
-  isLogIng: false,
+  idToken: "",
 };
 
 const localStorageSlice = createSlice({
@@ -19,74 +26,88 @@ const localStorageSlice = createSlice({
   initialState,
   reducers: {
     userLogin: (state, action) => {
-      if (state.data.includes(action.payload)) {
-      }
-    },
-    setInitalState: (state, action) => {
-      localStorage.setItem("initalState", JSON.stringify(state));
+      state.idToken = action.payload._tokenResponse.idToken;
+      state.user = action.payload.user;
     },
 
     signUpUser: (state, action) => {
-      const { id, userName, password, email } = action.payload;
-      action.payload.id = state.data.length;
-      let userAlreadyExist = false;
-      state.data.filter((item, key) => {
-        if (
-          item.userName === userName &&
-          item.password === password &&
-          item.email === email
-        )
-          userAlreadyExist = true;
-      });
+      const { password, email } = action.payload.userCredentials;
 
-      // check user alert exist or not
-      if (userAlreadyExist.length) {
-        alert("User AlReady exist");
-
-        return;
-      }
-      state.data.push(action.payload);
-
-      state.isLogIng = true;
-      state.currentUser = state.data.length - 1;
-    },
-    signIn: (state, action) => {
-      const { userName, password, email } = action.payload;
-      state.data.forEach((ele, indx) => {
-        if (
-          ele.userCredentials.password === password &&
-          ele.userCredentials.email === email
-        ) {
-          state.isLogIng = true;
-          state.currentUser = indx;
-
-          return true;
-        }
-      });
+      createUserWithEmailAndPassword(auth, email, password)
+        .then((userCredential) => {
+          // Signed in
+          // const user = userCredential.user;
+          // console.log(user);
+          console.log(userCredential);
+          // ...
+        })
+        .catch((error) => {
+          const errorCode = error.code;
+          const errorMessage = error.message;
+          // ..
+          alert(errorMessage);
+        });
     },
     logOutHandler: (state, action) => {
-      state.isLogIng = false;
-      state.currentUser = -1;
+     state.idToken="";
+     
     },
     addItemToFav: (state, action) => {
-      console.log(action.payload)
+      console.log(action.payload);
       const check = state.data[0].wishList.filter(
         (item) => item.product_id === action.payload.product_id
       );
-    
-      if (check.length===0) state.data[0].wishList.push(action.payload);
 
+      if (check.length === 0) state.data[0].wishList.push(action.payload);
+      else {
+        state.data[0].wishList = state.data[0].wishList.filter(
+          (item) => item.product_id !== action.payload.product_id
+        );
+      }
     },
     addItemToCart: (state, action) => {
-    
       const check = state.data[0].cartItems.filter(
         (item) => item.product_id === action.payload.product_id
       );
-    
-      if (check.length===0)
-      state.data[0].cartItems.push(action.payload);
+
+      if (check.length === 0) state.data[0].cartItems.push(action.payload);
+      else {
+        state.data[0].cartItems = state.data[0].cartItems.filter(
+          (item) => item.product_id !== action.payload.product_id
+        );
+      }
     },
   },
 });
+export const signInFirebase = (userCredentials) => {
+  const { password, email } = userCredentials;
+  console.log("initalState");
+  return async (dispatch) => {
+    signInWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+        // Signed in
+        const user = userCredential.user;
+        const _tokenResponse = userCredential._tokenResponse;
+        console.log(user);
+        dispatch(
+          localStorageActions.userLogin({
+            user,
+            _tokenResponse,
+          })
+        );
+        // console.log(userCredential);
+
+        // state.idToken=userCredential._tokenResponse.idToken;
+
+        // ...
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        // ..
+        alert(errorMessage);
+      });
+  };
+};
 export const localStorageActions = localStorageSlice.actions;
 export default localStorageSlice.reducer;

@@ -1,6 +1,6 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link ,useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 import styled from "styled-components";
 import { localStorageActions } from "../Reducers/localStorage";
@@ -56,7 +56,7 @@ const Box = styled.div`
   padding: 10px 0px;
   /* left: 30%; */
   width: calc(100% - 20px);
-  /* background-color: white; */
+
 
   i {
     font-size: 20px;
@@ -98,10 +98,12 @@ const Box = styled.div`
 `;
 
 export default function Card(props) {
+  const wishList = useSelector((state) => state.local.data[0].wishList);
+  const navigate = useNavigate();
   const { img, price, name, item } = props;
-  const currentUser = useSelector((state) => state.local.currentUser);
-const navigate = useNavigate();
-  console.log(img);
+  const fillHeart =
+    wishList.filter((ele) => item.product_id === ele.product_id).length === 1;
+
   const dispatch = useDispatch();
   return (
     <CardEle>
@@ -113,16 +115,18 @@ const navigate = useNavigate();
           />
         </Link>
         <Box>
-          <i className="bi bi-arrows-angle-expand" onClick={() => {
-            navigate(`/shop/${item.product_id}`)
-          }}></i>
+          <i
+            className="bi bi-arrows-angle-expand"
+            onClick={() => {
+              navigate(`/shop/${item.product_id}`);
+            }}
+          ></i>
 
           <i
             onClick={() => {
-        
               return dispatch(localStorageActions.addItemToFav(item));
             }}
-            className="bi bi-heart"
+            className={`bi  ${fillHeart?  "bi-heart-fill" : "bi-heart"}`}
           ></i>
           <i
             onClick={() => {
