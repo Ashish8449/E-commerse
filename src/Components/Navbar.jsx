@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
-import { Link, Navigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { localStorageActions } from "../Reducers/localStorage";
+import Favrate from "./Favrate";
 
 const Nav = styled.div`
   background-attachment: fixed;
@@ -116,7 +117,8 @@ const Button = styled.button`
 
 export default function Navbar() {
   // const  idToken=0;
-  const  idToken = useSelector((state) => state.local.idToken);
+  const [showFav, setFav] = useState(true);
+  const idToken = useSelector((state) => state.local.idToken);
 
   const currentUser = 0;
 
@@ -129,7 +131,6 @@ export default function Navbar() {
     currentUser >= 0 ? state.local.data[currentUser].cartItems : []
   );
 
-
   return (
     <>
       <Nav>
@@ -141,7 +142,7 @@ export default function Navbar() {
           <li>
             <Link to="/shop">MEN’S</Link>
           </li>
-      
+
           <li>
             <Link to="/shop">WOMEN’S</Link>
           </li>
@@ -151,32 +152,39 @@ export default function Navbar() {
           <input type="text" />
           <i className="fa fa-search" aria-hidden="true"></i>
         </Search> */}
-          {! idToken && (
+          {!idToken && (
             <li>
               {" "}
               <Link to="/login">Login / Register </Link>{" "}
             </li>
           )}
 
-          { (
-            <li>
+          {
+            <li
+              onClick={() => {
+                console.log("fav")
+                setFav(!fav);
+              }}
+              style={{
+                cursor: "pointer",
+              }}
+            >
               <i className="fa fa-heart-o" aria-hidden="true"></i>
               {fav.length > 0 && <span>{fav.length}</span>}
             </li>
-          )}
-          {(
+          }
+          {
             <li>
               <i className="fa fa-shopping-bag" aria-hidden="true"></i>
               {cartItems.length > 0 && <span>{cartItems.length}</span>}
             </li>
-          )}
-          { idToken && (
+          }
+          {idToken && (
             <li>
               {" "}
               <Button
                 onClick={() => {
                   dispatch(localStorageActions.logOutHandler());
-                 
                 }}
               >
                 Log Out
@@ -188,6 +196,7 @@ export default function Navbar() {
           <i className="bi bi-list"></i>
         </Hamburger>
       </Nav>
+      {fav && <Favrate />}
     </>
   );
 }
