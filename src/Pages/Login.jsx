@@ -1,9 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Navigate } from "react-router-dom";
-import { getDatabase, ref, set } from "firebase/database";
+
 import styled from "styled-components";
-import { localStorageActions, signInFirebase } from "../Reducers/localStorage";
+import {
+  localStorageActions,
+  signInFirebase,
+  signUpUser,
+} from "../Reducers/localStorage";
 import { Loader } from "./Home";
 import "./Login.css";
 
@@ -26,30 +30,23 @@ const LoginBox = styled.div`
 
 export default function Login() {
   const dispatch = useDispatch();
+
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const localData = useSelector((state) => state);
 
-  const idToken = useSelector((state) => state.local.idToken);
+  const idToken = useSelector((state) => state.local.user);
+  const data = useSelector((state) => state.local);
+  console.log(data);
+  console.log(idToken);
+
   const [loader, setLoader] = useState(true);
   useEffect(() => {
     setTimeout(() => {
       setLoader(false);
     }, 300);
   });
-  if (idToken) {
-    function writeUserData(userId, name, email, imageUrl) {
-      console.log("run");
-      const db = getDatabase();
-      set(ref(db, "users/" + userId), {
-        username: name,
-        email: email,
-        profile_picture: imageUrl,
-      });
-    }
-    writeUserData(2, name, email, password);
-  }
+
   const SignInClickHandler = (e) => {
     e.preventDefault();
     const container = document.getElementById("container");
@@ -81,18 +78,12 @@ export default function Login() {
     }
     console.log("signUP");
     dispatch(
-      localStorageActions.signUpUser({
-        id: -1,
-        userCredentials: {
-          userName: name,
-          password,
-          email,
-        },
-        wishList: [],
-        cartItems: [],
+      signUpUser({
+        userName: name,
+        password,
+        email,
       })
     );
-    dispatch(localStorageActions.setInitalState(localData.local));
   };
 
   return (

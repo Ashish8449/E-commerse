@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
+import InfiniteScroll from "react-infinite-scroll-component";
 import { useDispatch, useSelector } from "react-redux";
+import { useSearchParams } from "react-router-dom";
 
 import styled from "styled-components";
 import { getProducts } from "../Reducers/uiSlice";
@@ -28,6 +30,8 @@ export default function CardBox() {
   const products = useSelector((state) => state.ui.products);
   const [loader, setLoader] = useState(false);
   const dispatch = useDispatch();
+  const parms = useSearchParams();
+  console.log(parms);
   useEffect(() => {
     setLoader(true);
     dispatch(getProducts(setLoader));
@@ -40,18 +44,12 @@ export default function CardBox() {
           <img src="/images/Spinner-0.8s-223px.gif" alt="" />
         </Loader>
       )}
+
       {products.rows.length > 0 &&
         products.rows.map((item, indx) => {
-          return (
-            <Card
-              key={indx}
-              img={item.thumbnail}
-              name={item.name}
-              price={item.price}
-              item={item}
-            />
-          );
+          return <Card key={indx} item={item} />;
         })}
+
       {/* <Card />
       <Card /> <Card />
       <Card /> */}

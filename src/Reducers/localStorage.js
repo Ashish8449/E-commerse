@@ -3,19 +3,14 @@ import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
 } from "firebase/auth";
-import { auth } from "../Firebase/firebase";
+import { onValue, ref } from "firebase/database";
+
+import { auth, db } from "../Firebase/firebase";
 
 let initialState = {
-  data: [
-    {
-      userCredentials: {
-        userName: "",
-        password: -1,
-      },
-      wishList: [],
-      cartItems: [],
-    },
-  ],
+  wishList: [],
+  cartItems: [],
+
   user: "",
 
   idToken: "",
@@ -26,62 +21,52 @@ const localStorageSlice = createSlice({
   initialState,
   reducers: {
     userLogin: (state, action) => {
-      state.idToken = action.payload._tokenResponse.idToken;
+      state.user = action.payload.user.uid;
+      console.log("userLogin");
+    },
+
+    replaceData: (state, action) => {
+      console.log("replace data ", action.payload);
+      state.cartItems = action.payload.cartItems;
+      state.wishList = action.payload.wishList;
       state.user = action.payload.user;
     },
 
-    signUpUser: (state, action) => {
-      const { password, email } = action.payload.userCredentials;
-
-      createUserWithEmailAndPassword(auth, email, password)
-        .then((userCredential) => {
-          // Signed in
-          // const user = userCredential.user;
-          // console.log(user);
-          console.log(userCredential);
-          // ...
-        })
-        .catch((error) => {
-          const errorCode = error.code;
-          const errorMessage = error.message;
-          // ..
-          alert(errorMessage);
-        });
-    },
     logOutHandler: (state, action) => {
-     state.idToken="";
-     
+      state.user = "";
+      state.idToken = "";
     },
     addItemToFav: (state, action) => {
       console.log(action.payload);
-      const check = state.data[0].wishList.filter(
+      const check = state.wishList.filter(
         (item) => item.product_id === action.payload.product_id
       );
 
-      if (check.length === 0) state.data[0].wishList.push(action.payload);
+      if (check.length === 0) state.wishList.push(action.payload);
       else {
-        state.data[0].wishList = state.data[0].wishList.filter(
+        state.wishList = state.wishList.filter(
           (item) => item.product_id !== action.payload.product_id
         );
       }
     },
     addItemToCart: (state, action) => {
-      const check = state.data[0].cartItems.filter(
+      const check = state.cartItems.filter(
         (item) => item.product_id === action.payload.product_id
       );
 
-      if (check.length === 0) state.data[0].cartItems.push(action.payload);
+      if (check.length === 0) state.cartItems.push(action.payload);
       else {
-        state.data[0].cartItems = state.data[0].cartItems.filter(
+        state.cartItems = state.cartItems.filter(
           (item) => item.product_id !== action.payload.product_id
         );
       }
     },
   },
 });
+
 export const signInFirebase = (userCredentials) => {
   const { password, email } = userCredentials;
-  console.log("initalState");
+
   return async (dispatch) => {
     signInWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
@@ -89,15 +74,49 @@ export const signInFirebase = (userCredentials) => {
         const user = userCredential.user;
         const _tokenResponse = userCredential._tokenResponse;
         console.log(user);
+
+        const starCountRef = ref(db, "users/" + user.uid + "/data");
+        onValue(starCountRef, (snapshot) => {
+          const data = snapshot.val();
+          console.log(data);
+          dispatch(localStorageActions.replaceData(data));
+          dispatch(
+            localStorageActions.userLogin({
+              user,
+              _tokenResponse,
+            })
+          );
+        });
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        // ..
+        alert(errorMessage);
+      });
+  };
+};
+export const signUpUser = (items) => {
+  const { password, email } = items;
+  return async (dispatch) => {
+    createUserWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+        // Signed in
+
+        // console.log(user);
+        console.log(userCredential);
+
+        const user = userCredential.user;
+        const _tokenResponse = userCredential._tokenResponse;
+        console.log("userLogin");
         dispatch(
           localStorageActions.userLogin({
             user,
             _tokenResponse,
           })
         );
-        // console.log(userCredential);
 
-        // state.idToken=userCredential._tokenResponse.idToken;
+        // dispatch(localStorageActions.sendData());
 
         // ...
       })
@@ -109,5 +128,6 @@ export const signInFirebase = (userCredentials) => {
       });
   };
 };
+
 export const localStorageActions = localStorageSlice.actions;
 export default localStorageSlice.reducer;

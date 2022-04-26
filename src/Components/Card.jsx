@@ -1,10 +1,13 @@
+import { push, ref, set } from "firebase/database";
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 
 import styled from "styled-components";
+import { db } from "../Firebase/firebase";
 import { localStorageActions } from "../Reducers/localStorage";
 import { uiActions } from "../Reducers/uiSlice";
+
 const CardEle = styled.div`
   width: calc(25% - 30px);
   min-width: 250px;
@@ -57,7 +60,6 @@ const Box = styled.div`
   /* left: 30%; */
   width: calc(100% - 20px);
 
-
   i {
     font-size: 20px;
     margin: 0 10px;
@@ -98,19 +100,29 @@ const Box = styled.div`
 `;
 
 export default function Card(props) {
-  const wishList = useSelector((state) => state.local.data[0].wishList);
+  const wishList = useSelector((state) => state.local.wishList);
+  const data = useSelector((state) => state.local);
   const navigate = useNavigate();
-  const { img, price, name, item } = props;
+  const { item } = props;
+
+  const { thumbnail, price, name } = item;
   const fillHeart =
     wishList.filter((ele) => item.product_id === ele.product_id).length === 1;
 
+  let uid = "";
+  console.log(data);
+  if (data.user) {
+    set(ref(db, "users/" + data.user), {
+      data,
+    });
+  }
   const dispatch = useDispatch();
   return (
     <CardEle>
       <ImgBox>
         <Link to={`/shop/${item.product_id}`}>
           <img
-            src={`https://backendapi.turing.com/images/products/${img}`}
+            src={`https://backendapi.turing.com/images/products/${thumbnail}`}
             alt=""
           />
         </Link>
@@ -126,7 +138,7 @@ export default function Card(props) {
             onClick={() => {
               return dispatch(localStorageActions.addItemToFav(item));
             }}
-            className={`bi  ${fillHeart?  "bi-heart-fill" : "bi-heart"}`}
+            className={`bi  ${fillHeart ? "bi-heart-fill" : "bi-heart"}`}
           ></i>
           <i
             onClick={() => {

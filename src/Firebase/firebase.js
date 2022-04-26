@@ -19,6 +19,7 @@ const firebaseConfig = {
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 // Get a reference to the database service
-export const database = getDatabase(app);
+export const db= getDatabase(app);
 
 export const auth = getAuth(app);
+

@@ -1,10 +1,11 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
+import { shallowEqual, useDispatch, useSelector } from "react-redux";
 import { localStorageActions } from "../Reducers/localStorage";
 import Favrate from "./Favrate";
-
+import { doc, setDoc, Timestamp } from "firebase/firestore";
+import { getDatabase, onValue, ref, set } from "firebase/database";
 const Nav = styled.div`
   background-attachment: fixed;
   width: 100%;
@@ -115,20 +116,25 @@ const Button = styled.button`
   }
 `;
 
+const db = getDatabase();
 export default function Navbar() {
   // const  idToken=0;
-  const [showFav, setFav] = useState(true);
-  const idToken = useSelector((state) => state.local.idToken);
+  const data = useSelector((state) => state.local);
+
+  let uid = "";
+  if (data.user.uid) uid = data.user.uid;
+  const [showFav, setFav] = useState(false);
+  const idToken = useSelector((state) => state.local.user);
 
   const currentUser = 0;
 
   const dispatch = useDispatch();
 
   const fav = useSelector((state) =>
-    currentUser >= 0 ? state.local.data[currentUser].wishList : []
+    currentUser >= 0 ? state.local.wishList : []
   );
   const cartItems = useSelector((state) =>
-    currentUser >= 0 ? state.local.data[currentUser].cartItems : []
+    currentUser >= 0 ? state.local.cartItems : []
   );
 
   return (
@@ -162,14 +168,17 @@ export default function Navbar() {
           {
             <li
               onClick={() => {
-                console.log("fav")
-                setFav(!fav);
+                console.log(showFav);
+                setFav(!showFav);
               }}
               style={{
                 cursor: "pointer",
               }}
             >
-              <i className="fa fa-heart-o" aria-hidden="true"></i>
+              <i
+                className={`bi  ${showFav ? "bi-heart-fill" : "bi-heart"}`}
+                aria-hidden="true"
+              ></i>
               {fav.length > 0 && <span>{fav.length}</span>}
             </li>
           }
@@ -196,7 +205,7 @@ export default function Navbar() {
           <i className="bi bi-list"></i>
         </Hamburger>
       </Nav>
-      {fav && <Favrate />}
+      {showFav && <Favrate />}
     </>
   );
 }
