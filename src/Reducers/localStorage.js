@@ -35,6 +35,8 @@ const localStorageSlice = createSlice({
     logOutHandler: (state, action) => {
       state.user = "";
       state.idToken = "";
+      state.cartItems = [];
+      state.wishList = [];
     },
     addItemToFav: (state, action) => {
       console.log(action.payload);

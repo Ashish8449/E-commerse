@@ -133,8 +133,8 @@ export default function DetailsPage() {
   const dispatch = useDispatch();
   const { productId } = useParams();
   const products = useSelector((state) => state.ui.products);
-  const wishList = useSelector((state) => state.local.data[0].wishList);
-  const cartItems = useSelector((state) => state.local.data[0].cartItems);
+  const wishList = useSelector((state) => state.local.wishList);
+  const cartItems = useSelector((state) => state.local.cartItems);
   const currentItem = products.rows[productId - 1];
 
   const [loader, setLoader] = useState(false);

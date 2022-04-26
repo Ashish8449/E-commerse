@@ -62,13 +62,16 @@ const Fav = styled.div`
 
   /* Handle on hover */
   ::-webkit-scrollbar-thumb:hover {
-    background: #ff4b2b;
+    background: rgba(255, 75, 43, 0.735);
+    opacity: 0.8;
   
   }
 `;
 
-export default function Favrate() {
-  const wishList = useSelector((state) => state.local.data[0].wishList);
+export default function Favrate(props) {
+  const {showFav, setFav}=props;
+
+  const wishList = useSelector((state) => state.local.wishList);
   console.log(wishList);
 
   return (
@@ -76,7 +79,7 @@ export default function Favrate() {
       <Fav>
         {wishList.length===0 ? " NO items are found in the": ""}
         {wishList.map((item, key) => (
-          <Card key={key} item={item} />
+          <Card key={key} item={item} showFav={showFav} setFav={setFav} />
         ))}
       </Fav>
     </>

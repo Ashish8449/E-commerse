@@ -124,6 +124,7 @@ export default function Navbar() {
   let uid = "";
   if (data.user.uid) uid = data.user.uid;
   const [showFav, setFav] = useState(false);
+
   const idToken = useSelector((state) => state.local.user);
 
   const currentUser = 0;
@@ -205,7 +206,7 @@ export default function Navbar() {
           <i className="bi bi-list"></i>
         </Hamburger>
       </Nav>
-      {showFav && <Favrate />}
+      {showFav && <Favrate showFav={showFav} setFav={setFav} />}
     </>
   );
 }

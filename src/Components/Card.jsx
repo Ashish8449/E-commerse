@@ -104,7 +104,7 @@ export default function Card(props) {
   const data = useSelector((state) => state.local);
   const navigate = useNavigate();
   const { item } = props;
-
+  const { showFav, setFav } = props;
   const { thumbnail, price, name } = item;
   const fillHeart =
     wishList.filter((ele) => item.product_id === ele.product_id).length === 1;
@@ -120,7 +120,14 @@ export default function Card(props) {
   return (
     <CardEle>
       <ImgBox>
-        <Link to={`/shop/${item.product_id}`}>
+        <Link
+          to={`/shop/${item.product_id}`}
+          onClick={() => {
+            if (showFav) {
+              setFav(!showFav);
+            }
+          }}
+        >
           <img
             src={`https://backendapi.turing.com/images/products/${thumbnail}`}
             alt=""

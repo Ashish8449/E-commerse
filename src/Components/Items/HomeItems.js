@@ -4,27 +4,16 @@ import styled from "styled-components";
 
 const Items = styled.div`
   padding: 10px 50px;
+  margin-top: 30px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
 
-  h2 {
-    margin: 10px 0px;
-    text-transform: uppercase;
-    color: #3e4152;
-    letter-spacing: 0.15em;
-    font-size: 1.8em;
-    margin: 10px 20px;
-    max-height: 5em;
-    font-weight: 500;
+ 
+  & div {
+    margin: 10px;
+    width: calc(20% - 20px);
   }
-  div {
-    display: flex;
-    justify-content: space-evenly;
-    padding: 10px 10px;
-    flex-wrap: wrap;
-  }
-  /* @media (max-width: 575px) {
-
-    
-  } */
   @media (max-width: 600px) {
     padding: 10px 20px;
   }
@@ -32,14 +21,14 @@ const Items = styled.div`
 
 export default function Box(props) {
   const { title, imgs } = props;
- 
+
   // console.log(props);
   return (
-    <Items>
+    <>
       <h2>{title} </h2>
-      <div>
+      <Items>
         {{ imgs } && imgs.map((item, key) => <Card key={key} img={item} />)}
-      </div>
-    </Items>
+      </Items>
+    </>
   );
 }

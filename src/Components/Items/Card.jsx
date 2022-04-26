@@ -1,7 +1,8 @@
 import React from "react";
 import styled from "styled-components";
 const Item = styled.div`
-  width: calc(20% - 10px);
+  min-width: 250px;
+  height: 300px;
   img {
     width: 100%;
     height: 100%;

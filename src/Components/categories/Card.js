@@ -48,7 +48,7 @@ const Card = styled.div`
 `;
 const Content = styled.div`
   position: absolute;
-  bottom: 5px;
+  bottom: 25px;
 
   width: 100%;
   color: white;
