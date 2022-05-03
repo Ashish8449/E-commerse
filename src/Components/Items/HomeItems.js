@@ -9,7 +9,6 @@ const Items = styled.div`
   flex-wrap: wrap;
   justify-content: center;
 
- 
   & div {
     margin: 10px;
     width: calc(20% - 20px);
@@ -26,7 +25,7 @@ export default function Box(props) {
   return (
     <>
       <h2>{title} </h2>
-      <Items>
+      <Items data-aos="flip-right">
         {{ imgs } && imgs.map((item, key) => <Card key={key} img={item} />)}
       </Items>
     </>

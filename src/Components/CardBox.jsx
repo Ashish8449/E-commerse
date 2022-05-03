@@ -36,7 +36,10 @@ export default function CardBox() {
     setLoader(true);
     dispatch(getProducts(setLoader));
   }, []);
-
+  if (products.length > 0) {
+    setLoader(false);
+    console.log(products);
+  }
   return (
     <Box>
       {loader && (
@@ -47,7 +50,7 @@ export default function CardBox() {
 
       {products.rows.length > 0 &&
         products.rows.map((item, indx) => {
-          return <Card key={indx} item={item} />;
+          return <Card data-aos="zoom-out-down" key={indx} item={item} />;
         })}
 
       {/* <Card />

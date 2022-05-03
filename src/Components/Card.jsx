@@ -110,7 +110,7 @@ export default function Card(props) {
     wishList.filter((ele) => item.product_id === ele.product_id).length === 1;
 
   let uid = "";
-  console.log(data);
+
   if (data.user) {
     set(ref(db, "users/" + data.user), {
       data,
@@ -118,7 +118,7 @@ export default function Card(props) {
   }
   const dispatch = useDispatch();
   return (
-    <CardEle>
+    <CardEle data-aos="zoom-out-down">
       <ImgBox>
         <Link
           to={`/shop/${item.product_id}`}

@@ -31,7 +31,7 @@ export default function Card(props) {
   const { img } = props;
   return (
     <Item>
-      <img src={img} alt="" />
+      <img data-aos="zoom-out-down" src={img} alt="" />
     </Item>
   );
 }

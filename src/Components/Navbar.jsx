@@ -6,13 +6,14 @@ import { localStorageActions } from "../Reducers/localStorage";
 import Favrate from "./Favrate";
 import { doc, setDoc, Timestamp } from "firebase/firestore";
 import { getDatabase, onValue, ref, set } from "firebase/database";
+import ResponsiveNavBar from "../ResponsiveNavBar";
 const Nav = styled.div`
   background-attachment: fixed;
   width: 100%;
   padding-top: 15px;
   padding: 10px;
   padding-top: 20px;
-
+  min-height: 60px;
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
@@ -33,6 +34,7 @@ const NavitemsBox = styled.ul`
   justify-content: center;
   flex-grow: 1;
   text-align: center;
+
   li {
     margin-right: 30px;
     border: 4px solid transparent;
@@ -98,6 +100,11 @@ const Hamburger = styled.div`
     margin-right: 20px;
     cursor: pointer;
   }
+  & .bi-x-lg {
+    font-size: 30px;
+  }
+  animation: jello;
+  animation-duration: 0.2s;
   display: none;
   @media (max-width: 800px) {
     display: block;
@@ -105,7 +112,7 @@ const Hamburger = styled.div`
 `;
 const Button = styled.button`
   padding: 8px;
-  border-radius: 4px;
+  border-radius: 8px;
   border: none;
   background: #ff2020;
   color: white;
@@ -120,6 +127,7 @@ const db = getDatabase();
 export default function Navbar() {
   // const  idToken=0;
   const data = useSelector((state) => state.local);
+  const [showNavbar, setNavBar] = useState(false);
 
   let uid = "";
   if (data.user.uid) uid = data.user.uid;
@@ -137,6 +145,10 @@ export default function Navbar() {
   const cartItems = useSelector((state) =>
     currentUser >= 0 ? state.local.cartItems : []
   );
+  const hamburgerHandler = (e) => {
+    console.log("clicked on hamburger menu");
+    setNavBar(!showNavbar);
+  };
 
   return (
     <>
@@ -202,11 +214,17 @@ export default function Navbar() {
             </li>
           )}
         </LoginBox>
-        <Hamburger>
-          <i className="bi bi-list"></i>
+        <Hamburger onClick={hamburgerHandler}>
+          {!showNavbar && (
+            <i className="bi bi-list" onClick={hamburgerHandler}></i>
+          )}
+          {showNavbar && (
+            <i className="bi bi-x-lg" onClick={hamburgerHandler}></i>
+          )}
         </Hamburger>
       </Nav>
       {showFav && <Favrate showFav={showFav} setFav={setFav} />}
+      {showNavbar && <ResponsiveNavBar show={showNavbar} setshow={setNavBar} />}
     </>
   );
 }
