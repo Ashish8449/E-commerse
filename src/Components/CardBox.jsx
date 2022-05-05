@@ -26,7 +26,7 @@ const Loader = styled.div`
     text-align: center;
   }
 `;
-export default function CardBox() {
+export default function CardBox(props) {
   const products = useSelector((state) => state.ui.products);
   const [loader, setLoader] = useState(false);
   const dispatch = useDispatch();
@@ -53,9 +53,7 @@ export default function CardBox() {
           return <Card data-aos="zoom-out-down" key={indx} item={item} />;
         })}
 
-      {/* <Card />
-      <Card /> <Card />
-      <Card /> */}
+   
     </Box>
   );
 }

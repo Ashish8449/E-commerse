@@ -10,12 +10,15 @@ import ResponsiveNavBar from "../ResponsiveNavBar";
 const Nav = styled.div`
   background-attachment: fixed;
   width: 100%;
-  padding-top: 15px;
-  padding: 10px;
-  padding-top: 20px;
+/* margin: 0px 10px; */
+
+ul{
+  margin: 0;
+}
+
   min-height: 60px;
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   justify-content: space-between;
   box-shadow: 0 5px 10px rgb(91 91 91 / 10%);
   img {
@@ -32,6 +35,7 @@ const NavitemsBox = styled.ul`
   list-style: none;
   display: flex;
   justify-content: center;
+  align-items: center;
   flex-grow: 1;
   text-align: center;
 
@@ -83,15 +87,37 @@ const LoginBox = styled.ul`
     display: none;
   }
 `;
-const Search = styled.li`
+const Search = styled.form`
   display: flex;
   justify-content: center;
   align-items: center;
+  flex-direction: row;
   i {
     margin-left: 10px;
+    font-size: 20px;
   }
+  background: transparent;
+  padding: 0px;
+  margin: 0px;
   input {
     border-radius: 10px;
+    background-color: transparent;
+    border: none;
+    padding: 3px 2px;
+    border: 1px solid;
+    margin: 0px 0;
+    width: 100%;
+  }
+  button {
+    padding: 0;
+    margin: 0;
+    background: transparent;
+    border: none;
+    color: #000;
+    margin-left: 15px;
+  }
+  input:focus {
+    outline: none;
   }
 `;
 const Hamburger = styled.div`
@@ -167,10 +193,18 @@ export default function Navbar() {
           </li>
         </NavitemsBox>
         <LoginBox>
-          {/* <Search>
-          <input type="text" />
-          <i className="fa fa-search" aria-hidden="true"></i>
-        </Search> */}
+          <li>
+            <Search
+              onSubmit={(e) => {
+                e.preventDefault();
+                console.log("submit the form");
+              }}
+            >
+              <input type="text" />
+
+              <button className="fa fa-search" aria-hidden="true"></button>
+            </Search>
+          </li>
           {!idToken && (
             <li>
               {" "}
