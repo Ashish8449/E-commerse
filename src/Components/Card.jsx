@@ -112,7 +112,7 @@ export default function Card(props) {
     wishList.filter((ele) => item.product_id === ele.product_id).length === 1;
 
   let uid = "";
-  console.log(props);
+  
   if (data.user) {
     set(ref(db, "users/" + data.user), {
       data,

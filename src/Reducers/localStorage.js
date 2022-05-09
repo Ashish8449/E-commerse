@@ -22,11 +22,9 @@ const localStorageSlice = createSlice({
   reducers: {
     userLogin: (state, action) => {
       state.user = action.payload.user.uid;
-      console.log("userLogin");
     },
 
     replaceData: (state, action) => {
-      console.log("replace data ", action.payload);
       state.cartItems = action.payload.cartItems;
       state.wishList = action.payload.wishList;
       state.user = action.payload.user;
@@ -39,7 +37,6 @@ const localStorageSlice = createSlice({
       state.wishList = [];
     },
     addItemToFav: (state, action) => {
-      console.log(action.payload);
       const check = state.wishList.filter(
         (item) => item.product_id === action.payload.product_id
       );
@@ -63,6 +60,11 @@ const localStorageSlice = createSlice({
         );
       }
     },
+    removeHandler: (state, action) => {
+      state.cartItems = state.cartItems.filter(
+        (item) => item.product_id !== action.payload.product_id
+      );
+    },
   },
 });
 
@@ -75,12 +77,11 @@ export const signInFirebase = (userCredentials) => {
         // Signed in
         const user = userCredential.user;
         const _tokenResponse = userCredential._tokenResponse;
-        console.log(user);
 
         const starCountRef = ref(db, "users/" + user.uid + "/data");
         onValue(starCountRef, (snapshot) => {
           const data = snapshot.val();
-          console.log(data);
+
           dispatch(localStorageActions.replaceData(data));
           dispatch(
             localStorageActions.userLogin({
@@ -105,12 +106,9 @@ export const signUpUser = (items) => {
       .then((userCredential) => {
         // Signed in
 
-        // console.log(user);
-        console.log(userCredential);
-
         const user = userCredential.user;
         const _tokenResponse = userCredential._tokenResponse;
-        console.log("userLogin");
+
         dispatch(
           localStorageActions.userLogin({
             user,

@@ -158,9 +158,8 @@ export default function Navbar() {
   const [searchInput, setSearch] = useState("");
   const searchClickHandler = (e) => {
     e.preventDefault();
-  
+
     history(`/search/${searchInput}`);
-    
   };
 
   let uid = "";
@@ -180,7 +179,6 @@ export default function Navbar() {
     currentUser >= 0 ? state.local.cartItems : []
   );
   const hamburgerHandler = (e) => {
-
     setNavBar(!showNavbar);
   };
 
@@ -197,7 +195,7 @@ export default function Navbar() {
           </li>
 
           <li>
-            <Link to="/shop">WOMEN’S</Link>
+            <Link to="/shop/women's">WOMEN’S</Link>
           </li>
         </NavitemsBox>
         <LoginBox>
@@ -240,7 +238,9 @@ export default function Navbar() {
           }
           {
             <li>
-              <i className="fa fa-shopping-bag" aria-hidden="true"></i>
+              <Link to="/cartItems">
+                <i className="fa fa-shopping-bag" aria-hidden="true"></i>
+              </Link>
               {cartItems.length > 0 && <span>{cartItems.length}</span>}
             </li>
           }

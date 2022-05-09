@@ -26,11 +26,12 @@ const Loader = styled.div`
   }
 `;
 export default function CardBox(props) {
-  const products = useSelector((state) => state.ui.products);
+  const { type } = props;
+  let products = useSelector((state) => state.ui.products);
+  let items = products.rows;
   const [loader, setLoader] = useState(false);
   const dispatch = useDispatch();
-  const parms = useSearchParams();
-  console.log(parms);
+
   useEffect(() => {
     setLoader(true);
     dispatch(getProducts(setLoader));
@@ -39,6 +40,15 @@ export default function CardBox(props) {
     setLoader(false);
     console.log(products);
   }
+  console.log(products);
+  console.log(type);
+  if (type === "women") {
+    console.log(products.rows);
+    items = products.rows.filter((ele, indx) => {
+      return indx > 20;
+    });
+  }
+
   return (
     <Box>
       {loader && (
@@ -47,12 +57,10 @@ export default function CardBox(props) {
         </Loader>
       )}
 
-      {products.rows.length > 0 &&
-        products.rows.map((item, indx) => {
+      {items.length > 0 &&
+        items.map((item, indx) => {
           return <Card data-aos="zoom-out-down" key={indx} item={item} />;
         })}
-
-   
     </Box>
   );
 }

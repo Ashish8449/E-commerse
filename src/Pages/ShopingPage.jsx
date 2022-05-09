@@ -46,12 +46,12 @@ const Input = styled.div`
     padding: 5px;
   }
 `;
-export default function ShopingPage() {
+export default function ShopingPage(props) {
   const [search, setSearch] = useState(null);
+  const { type } = props;
   const searchClickHandler = function (e) {
     e.preventDefault();
     setSearch(!search);
-
   };
   return (
     <>
@@ -63,7 +63,7 @@ export default function ShopingPage() {
           ))}
         </Left>
         <Right>
-          <CardBox />
+          <CardBox type={type} />
         </Right>
       </Box>
     </>

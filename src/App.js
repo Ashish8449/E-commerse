@@ -16,6 +16,7 @@ import AOS from "aos";
 import "animate.css";
 import "aos/dist/aos.css"; // You can also use <link> for styles
 import SearchPage from "./Pages/SearchPage";
+import MyCart from "./Pages/MyCart";
 // ..
 AOS.init({
   // Global settings:
@@ -50,9 +51,15 @@ function App() {
           <Routes>
             <Route excat path="/" element={<Home />} />
             <Route excat path="/shop" element={<ShopingPage />} />
+            <Route
+              excat
+              path="/shop/women's"
+              element={<ShopingPage type="women" />}
+            />
             <Route excat path="/shop/:productId" element={<DetailsPage />} />
             <Route excat path="/search/:item" element={<SearchPage />} />
             <Route excat path="/login" element={<Login />} />
+            <Route excat path="/cartItems" element={<MyCart />} />
           </Routes>
         </Wrapper>
         <Footer />
