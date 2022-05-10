@@ -4,7 +4,7 @@ import Navbar from "./Components/Navbar";
 import "bootstrap-icons/font/bootstrap-icons.css";
 
 import Footer from "./Components/Footer";
-
+import styled from "styled-components";
 import { BrowserRouter } from "react-router-dom";
 import { Routes, Route } from "react-router-dom";
 
@@ -15,6 +15,7 @@ import DetailsPage from "./Pages/DetailsPage";
 import AOS from "aos";
 import "animate.css";
 import "aos/dist/aos.css"; // You can also use <link> for styles
+import SearchPage from "./Pages/SearchPage";
 // ..
 AOS.init({
   // Global settings:
@@ -37,18 +38,23 @@ AOS.init({
   anchorPlacement: "top-bottom", // defines which position of the element regarding to window should trigger the animation
 });
 
+const Wrapper = styled.div`
+  min-height: 70vh;
+`;
 function App() {
   return (
     <>
       <BrowserRouter>
         <Navbar />
-        <Routes>
-          <Route excat path="/" element={<Home />} />
-          <Route excat path="/shop" element={<ShopingPage />} />
-          <Route excat path="/shop/:productId" element={<DetailsPage />} />
-          <Route excat path="/login" element={<Login />} />
-        </Routes>
-
+        <Wrapper>
+          <Routes>
+            <Route excat path="/" element={<Home />} />
+            <Route excat path="/shop" element={<ShopingPage />} />
+            <Route excat path="/shop/:productId" element={<DetailsPage />} />
+            <Route excat path="/search/:item" element={<SearchPage />} />
+            <Route excat path="/login" element={<Login />} />
+          </Routes>
+        </Wrapper>
         <Footer />
       </BrowserRouter>
     </>

@@ -1,22 +1,23 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { shallowEqual, useDispatch, useSelector } from "react-redux";
 import { localStorageActions } from "../Reducers/localStorage";
 import Favrate from "./Favrate";
 import { doc, setDoc, Timestamp } from "firebase/firestore";
 import { getDatabase, onValue, ref, set } from "firebase/database";
 import ResponsiveNavBar from "../ResponsiveNavBar";
+
 const Nav = styled.div`
   background-attachment: fixed;
   width: 100%;
-/* margin: 0px 10px; */
+  /* margin: 0px 10px; */
 
-ul{
-  margin: 0;
-}
+  ul {
+    margin: 0;
+  }
 
-  min-height: 60px;
+  min-height: 70px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -149,11 +150,18 @@ const Button = styled.button`
   }
 `;
 
-const db = getDatabase();
 export default function Navbar() {
   // const  idToken=0;
   const data = useSelector((state) => state.local);
+  const history = useNavigate();
   const [showNavbar, setNavBar] = useState(false);
+  const [searchInput, setSearch] = useState("");
+  const searchClickHandler = (e) => {
+    e.preventDefault();
+  
+    history(`/search/${searchInput}`);
+    
+  };
 
   let uid = "";
   if (data.user.uid) uid = data.user.uid;
@@ -172,7 +180,7 @@ export default function Navbar() {
     currentUser >= 0 ? state.local.cartItems : []
   );
   const hamburgerHandler = (e) => {
-    console.log("clicked on hamburger menu");
+
     setNavBar(!showNavbar);
   };
 
@@ -194,13 +202,14 @@ export default function Navbar() {
         </NavitemsBox>
         <LoginBox>
           <li>
-            <Search
-              onSubmit={(e) => {
-                e.preventDefault();
-                console.log("submit the form");
-              }}
-            >
-              <input type="text" />
+            <Search onSubmit={searchClickHandler}>
+              <input
+                type="text"
+                value={searchInput}
+                onChange={(e) => {
+                  setSearch(e.target.value);
+                }}
+              />
 
               <button className="fa fa-search" aria-hidden="true"></button>
             </Search>

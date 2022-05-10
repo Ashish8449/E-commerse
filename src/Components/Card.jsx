@@ -6,15 +6,14 @@ import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { db } from "../Firebase/firebase";
 import { localStorageActions } from "../Reducers/localStorage";
-import { uiActions } from "../Reducers/uiSlice";
 
 const CardEle = styled.div`
   width: calc(25% - 30px);
-  min-width: 250px;
+
   margin-bottom: 30px;
   margin: 10px;
   position: relative;
-
+  min-width: 210px;
   transition: 2s;
   border-radius: 2px;
 
@@ -32,6 +31,9 @@ const CardEle = styled.div`
   }
   &:hover a {
     color: #ff4b2b;
+  }
+  @media only screen and (max-width: 600px) {
+  
   }
 `;
 const Content = styled.div`
@@ -110,7 +112,7 @@ export default function Card(props) {
     wishList.filter((ele) => item.product_id === ele.product_id).length === 1;
 
   let uid = "";
-
+  console.log(props);
   if (data.user) {
     set(ref(db, "users/" + data.user), {
       data,

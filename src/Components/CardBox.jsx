@@ -10,7 +10,6 @@ const Box = styled.div`
   display: flex;
   flex-wrap: wrap;
   justify-content: space-evenly;
-  /* align-items:; */
   padding: 40px 0;
   transition: 0.7s;
 `;
