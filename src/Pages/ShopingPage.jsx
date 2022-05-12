@@ -21,6 +21,9 @@ const Left = styled.div`
     margin: 0;
     padding: 0;
   }
+  @media only screen and (max-width: 800px) {
+    display: none;
+  }
 `;
 const Right = styled.div`
   padding-left: 10px;

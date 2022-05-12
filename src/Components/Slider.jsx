@@ -17,7 +17,7 @@ const SliderBox = styled.div`
 
   align-items: center;
   @media (max-width: 380px) {
-    background-position: ${(props) => (!props.position ? "100%" : "-1000%")};
+    background-position: ${(props) => (!props.position ? "100%" : "18%")};
     padding: 0 30px;
     
   }

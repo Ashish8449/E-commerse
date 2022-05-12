@@ -6,7 +6,7 @@ const Item = styled.div`
   img {
     width: 100%;
     height: 100%;
-    object-fit: contain;
+    /* object-fit: cover; */
   }
   @media (max-width: 700px) {
     width: calc(33% - 10px);
@@ -17,13 +17,17 @@ const Item = styled.div`
     }
   }
   @media (max-width: 500px) {
-    width: calc(50% - 12px);
+    width: calc(100% - 12px);
     margin: 6px;
     text-align: center;
   }
   @media (max-width: 350px) {
     width: calc(100% - 5px);
     margin: 5px;
+    min-width: calc(100vw - 20px);
+    img {
+      min-width: 300px;
+    }
     /* text-align: center; */
   }
 `;

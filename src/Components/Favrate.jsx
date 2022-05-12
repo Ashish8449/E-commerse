@@ -16,9 +16,10 @@ const showItems = keyframes`
 `;
 
 const Fav = styled.div`
-  position: absolute;
-  top: 85px;
-  right: 0;
+  position: fixed;
+
+  top: 0px;
+  right: 5px;
   width: 360px;
   border-radius: 2px;
   z-index: 1000;
@@ -36,7 +37,10 @@ const Fav = styled.div`
 
   height: 1000px;
   overflow-y: auto;
-  overflow-x: hidden !important; ;
+  overflow-x: hidden !important;
+  h2 {
+    margin-bottom: 40px;
+  }
 `;
 
 export default function Favrate(props) {
@@ -52,6 +56,7 @@ export default function Favrate(props) {
           setFav(!showFav);
         }}
       >
+        <h2>My Wishlist</h2>
         {wishList.length === 0 ? " NO items are found in the" : ""}
         {wishList.map((item, key) => (
           <Card key={key} item={item} showFav={showFav} setFav={setFav} />

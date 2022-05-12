@@ -16,9 +16,10 @@ const Box = styled.div`
     width: 100%;
   }
 
-  @media (max-width: 506px) {
+  @media (max-width: 766px) {
     flex-direction: column;
     /* width: calc(100% - 20px); */
+    padding: 10px;
   }
 `;
 

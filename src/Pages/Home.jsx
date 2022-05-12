@@ -17,6 +17,12 @@ export const Loader = styled.div`
     text-align: center;
   }
 `;
+const Wrapper = styled.div`
+  @media (max-width: 766px) {
+    padding: 10px;
+    border-radius: 8px;
+  }
+`;
 export default function Home() {
   const [loader, setLoader] = useState(false);
   useEffect(() => {
@@ -36,7 +42,9 @@ export default function Home() {
       {!loader && (
         <>
           <CarouselComponet />
-          <CardBox />
+          <Wrapper>
+            <CardBox />
+          </Wrapper>
           {homeItemsList.map((item, key) => (
             <HomeItems key={key} title={item.title} imgs={item.imgs} />
           ))}

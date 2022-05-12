@@ -11,10 +11,10 @@ const Items = styled.div`
 
   & div {
     margin: 10px;
-    width: calc(20% - 20px);
+    /* width: calc(20% - 20px); */
   }
   @media (max-width: 600px) {
-    padding: 10px 20px;
+    /* padding: 10px 20px; */
   }
 `;
 

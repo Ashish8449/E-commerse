@@ -10,6 +10,7 @@ const CartItem = styled.div`
   padding: 10px 0px;
 
   border: 1px solid #f2e1e1;
+  height: auto;
   img {
     width: 100%;
   }
@@ -52,12 +53,13 @@ export default function MycartItems(props) {
   return (
     <CartItem>
       <ImgBox>
-        <img
-          src={`https://backendapi.turing.com/images/products/${item.thumbnail}`}
-          alt=""
-        />
+        <Link to={`/shop/${item.product_id}`}>
+          <img
+            src={`https://backendapi.turing.com/images/products/${item.thumbnail}`}
+            alt=""
+          />
+        </Link>
       </ImgBox>
-
       <ProductDetails>
         <h4>{item.name}</h4>
         <p>{item.description.slice(0, 80)} ...</p>

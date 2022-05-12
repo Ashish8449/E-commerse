@@ -11,6 +11,11 @@ const CartBox = styled.div`
   display: flex;
   flex-wrap: wrap;
   padding: 10px 10px;
+  @media only screen and (max-width: 760px) {
+    & div {
+      width: calc(100% - 20px);
+    }
+  }
 `;
 const Total = styled.h3`
   padding: 10px 30px;
@@ -23,7 +28,7 @@ const Total = styled.h3`
 `;
 export default function MyCart() {
   const items = useSelector((state) => state.local.cartItems);
- 
+
   let TotalPrice = 0;
   items.forEach((item) => {
     TotalPrice = TotalPrice + +(item.price * 80).toFixed(0);

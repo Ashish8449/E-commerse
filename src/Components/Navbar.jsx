@@ -222,7 +222,6 @@ export default function Navbar() {
           {
             <li
               onClick={() => {
-                console.log(showFav);
                 setFav(!showFav);
               }}
               style={{
@@ -267,7 +266,14 @@ export default function Navbar() {
         </Hamburger>
       </Nav>
       {showFav && <Favrate showFav={showFav} setFav={setFav} />}
-      {showNavbar && <ResponsiveNavBar show={showNavbar} setshow={setNavBar} />}
+      {showNavbar && (
+        <ResponsiveNavBar
+          show={showNavbar}
+          setshow={setNavBar}
+          showFav={showFav}
+          setFav={setFav}
+        />
+      )}
     </>
   );
 }
