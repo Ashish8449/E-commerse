@@ -11,6 +11,10 @@ const Wrapper = styled.div`
   display: flex;
   justify-content: center;
   align-items: flex-start;
+  @media only screen and (max-width: 700px) {
+    display: block;
+  }
+  
 `;
 const Img = styled.div`
   text-align: center;
@@ -128,7 +132,7 @@ let discount = Math.random() * 10 + 20;
 discount = discount.toFixed(0);
 
 const RatingRate = (Math.random().toFixed(2) * 2 + 3).toPrecision(2);
-const Rateby= (Math.random()* 500000).toFixed(0);
+const Rateby = (Math.random() * 500000).toFixed(0);
 export default function DetailsPage() {
   const dispatch = useDispatch();
   const { productId } = useParams();
@@ -139,6 +143,7 @@ export default function DetailsPage() {
 
   const [loader, setLoader] = useState(false);
   const [item, setItem] = useState("");
+
   useEffect(() => {
     dispatch(getProductsDetials(setLoader, productId, setItem));
   }, [productId]);
@@ -194,10 +199,7 @@ export default function DetailsPage() {
               <span>{RatingRate}</span>
               <img src="/images/star.svg" alt="" />
             </Rating>
-            <RateingText>
-              {Rateby} ratings and 9,515
-              reviews
-            </RateingText>
+            <RateingText>{Rateby} ratings and 9,515 reviews</RateingText>
 
             <Buttons>
               <Button
@@ -206,7 +208,7 @@ export default function DetailsPage() {
                 }
               >
                 <i className="bi bi-cart-plus"></i>
-             {isInCart ? "Remove  ": "Add "}   
+                {isInCart ? "Remove  " : "Add "}
               </Button>{" "}
               <Button
                 onClick={() =>

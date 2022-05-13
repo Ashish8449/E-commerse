@@ -33,12 +33,12 @@ const CardEle = styled.div`
     color: #ff4b2b;
   }
   @media only screen and (max-width: 600px) {
-  
   }
 `;
 const Content = styled.div`
   margin-top: 35px;
   text-align: center;
+
 `;
 const ImgBox = styled.div`
   position: relative;
@@ -112,7 +112,7 @@ export default function Card(props) {
     wishList.filter((ele) => item.product_id === ele.product_id).length === 1;
 
   let uid = "";
-  
+
   if (data.user) {
     set(ref(db, "users/" + data.user), {
       data,
