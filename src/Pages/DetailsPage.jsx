@@ -11,10 +11,10 @@ const Wrapper = styled.div`
   display: flex;
   justify-content: center;
   align-items: flex-start;
-  @media only screen and (max-width: 700px) {
-    display: block;
+  @media only screen and (max-width: 800px) {
+    flex-direction: column;
+    align-items: center;
   }
-  
 `;
 const Img = styled.div`
   text-align: center;
@@ -28,6 +28,9 @@ const Img = styled.div`
 
   img {
     width: 100%;
+  }
+  @media only screen and (max-width: 800px) {
+    min-width: 200px;
   }
 `;
 const Discription = styled.div`
@@ -143,7 +146,6 @@ export default function DetailsPage() {
 
   const [loader, setLoader] = useState(false);
   const [item, setItem] = useState("");
-
   useEffect(() => {
     dispatch(getProductsDetials(setLoader, productId, setItem));
   }, [productId]);

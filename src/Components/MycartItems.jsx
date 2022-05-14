@@ -14,6 +14,10 @@ const CartItem = styled.div`
   img {
     width: 100%;
   }
+  @media only screen and (max-width: 430px) {
+    flex-direction: column;
+    /* text-align: center; */
+  }
 `;
 
 const ImgBox = styled.div`
@@ -22,6 +26,7 @@ const ImgBox = styled.div`
   font-size: 18px;
   font-weight: 600;
   text-align: center;
+  margin-bottom: 20px;
   img {
     width: 100%;
     height: 100%;
