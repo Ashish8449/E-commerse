@@ -3,6 +3,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { Navigate } from "react-router-dom";
 
 import styled from "styled-components";
+import ResponsiveLogin from "../Components/ResponsiveLogin";
+
 import {
   localStorageActions,
   signInFirebase,
@@ -12,7 +14,7 @@ import { Loader } from "./Home";
 import "./Login.css";
 
 const LoginBox = styled.div`
-  min-height: 100vh;
+  min-height: 80vh;
   display: flex;
 
   justify-content: center;
@@ -22,10 +24,13 @@ const LoginBox = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  flex-direction: column;
+  /* flex-direction: column; */
   font-family: "Montserrat", sans-serif;
-  height: 100vh;
+  /* height: 100vh; */
   margin: 30px 0;
+  @media only screen and (max-width: 800px) {
+    display: none;
+  }
 `;
 
 export default function Login() {
@@ -64,9 +69,9 @@ export default function Login() {
 
     dispatch(
       signInFirebase({
-        password,
+       password,
         email,
-      })
+      }) 
     );
   };
   const submitSignUpHandler = (e) => {
@@ -186,6 +191,7 @@ export default function Login() {
           </div>
         </div>
       </LoginBox>
+      <ResponsiveLogin />
     </>
   );
 }

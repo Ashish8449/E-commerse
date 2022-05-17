@@ -19,8 +19,10 @@ const Fav = styled.div`
   position: fixed;
 
   top: 0px;
-  right: 5px;
-  width: 360px;
+  right: 0px;
+  max-width: 360px;
+  width: calc(100vh - 10px
+    );
   border-radius: 2px;
   z-index: 1000;
   background: hsl(0deg 0% 80% / 98%);
@@ -47,7 +49,6 @@ export default function Favrate(props) {
   const { showFav, setFav } = props;
 
   const wishList = useSelector((state) => state.local.wishList);
-  console.log(wishList);
 
   return (
     <>
@@ -57,7 +58,7 @@ export default function Favrate(props) {
         }}
       >
         <h2>My Wishlist</h2>
-        {wishList.length === 0 ? " NO items are found in the" : ""}
+        {wishList.length === 0 ? <h4> Your Wishlist is empty!!🙆‍♂️ </h4> : ""}
         {wishList.map((item, key) => (
           <Card key={key} item={item} showFav={showFav} setFav={setFav} />
         ))}
